@@ -12,6 +12,7 @@ export const StyledButton = styled('button', {
   fontSize: '0.95rem',
   borderRadius: 10,
   border: 'none',
+  width: '100%',
 
   svg: {
     color: '$purple100',

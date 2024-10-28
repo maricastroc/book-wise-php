@@ -13,12 +13,14 @@ import {
   Content,
   CloseButton,
   FormContainer,
+  ImageInput,
+  Input,
 } from './styles'
-import { CustomInput } from '../shared/Input'
 import { CustomLabel } from '../shared/Label'
 import { FormErrors } from '../shared/FormErrors'
 import { InputContainer } from '../shared/InputContainer'
 import { CustomButton } from '../shared/Button'
+import { useRef } from 'react'
 
 interface SignUpModalProps {
   onClose: () => void
@@ -49,10 +51,13 @@ const signUpFormSchema = z
 type SignUpFormData = z.infer<typeof signUpFormSchema>
 
 export function SignUpModal({ onClose }: SignUpModalProps) {
+  const inputFileRef = useRef<HTMLInputElement>(null);
+
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { isSubmitting, errors },
   } = useForm<SignUpFormData>({
     resolver: zodResolver(signUpFormSchema),
@@ -92,9 +97,14 @@ export function SignUpModal({ onClose }: SignUpModalProps) {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
+    console.log(file)
     if (file) setValue('avatar_url', file)
   }
 
+  const handleFileButtonClick = () => {
+    inputFileRef.current?.click();
+  };
+console.log(watch())
   return (
     <Dialog.Portal>
       <Overlay className="DialogOverlay" />
@@ -108,14 +118,21 @@ export function SignUpModal({ onClose }: SignUpModalProps) {
         </Title>
 
         <Description className="DialogDescription">
-          <FormContainer onSubmit={handleSubmit(handleSignUp)}>
+          <FormContainer>
             <InputContainer>
               <CustomLabel>Your avatar here</CustomLabel>
-              <CustomInput
-                type="file"
-                {...register('avatar_url')}
-                onChange={handleFileChange}
-              />
+              <ImageInput>
+                <input
+                  type="file"
+                  ref={inputFileRef}
+                  style={{ display: 'none' }}
+                  onChange={handleFileChange}
+                />
+                <button type="button" onClick={handleFileButtonClick}>
+                  Choose File
+                </button>
+                <span>{watch('avatar_url')?.name}</span>
+              </ImageInput>
               {errors.avatar_url && (
                 <FormErrors error={errors.avatar_url.message} />
               )}
@@ -123,7 +140,7 @@ export function SignUpModal({ onClose }: SignUpModalProps) {
 
             <InputContainer>
               <CustomLabel>Your name here</CustomLabel>
-              <CustomInput
+              <Input
                 type="text"
                 placeholder="Jon Doe"
                 {...register('name')}
@@ -133,7 +150,7 @@ export function SignUpModal({ onClose }: SignUpModalProps) {
 
             <InputContainer>
               <CustomLabel>Your e-mail here</CustomLabel>
-              <CustomInput
+              <Input
                 placeholder="myuser@email.com"
                 {...register('email')}
               />
@@ -142,7 +159,7 @@ export function SignUpModal({ onClose }: SignUpModalProps) {
 
             <InputContainer>
               <CustomLabel>Your password here</CustomLabel>
-              <CustomInput
+              <Input
                 type="password"
                 placeholder="password"
                 {...register('password')}
@@ -154,7 +171,7 @@ export function SignUpModal({ onClose }: SignUpModalProps) {
 
             <InputContainer>
               <CustomLabel>Confirm your password</CustomLabel>
-              <CustomInput
+              <Input
                 type="password"
                 placeholder="confirm password"
                 {...register('password_confirm')}
@@ -166,7 +183,7 @@ export function SignUpModal({ onClose }: SignUpModalProps) {
 
             <CustomButton
               content="Sign Up"
-              type="submit"
+              onClick={handleSubmit(handleSignUp)}
               disabled={isSubmitting}
             />
           </FormContainer>

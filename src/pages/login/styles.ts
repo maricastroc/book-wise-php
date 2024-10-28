@@ -156,3 +156,12 @@ export const Divider = styled('span', {
   width: '100%',
   marginTop: 1,
 })
+
+export const Input = styled('input', {
+  backgroundColor: 'transparent',
+  border: 'solid 1px $gray500',
+  color: '$gray100',
+  padding: '0.6rem',
+  fontSize: '0.95rem',
+  borderRadius: 10,
+})

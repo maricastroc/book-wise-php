@@ -11,20 +11,20 @@ import { useState } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 
 import {
-  CoverContainer,
-  Heading,
   Container,
-  Separator,
-  WelcomeContainer,
-  FormContainer,
-  SignUpBtn,
+  CoverContainer,
   Divider,
+  FormContainer,
+  Heading,
+  Input,
+  Separator,
+  SignUpBtn,
+  WelcomeContainer,
   WelcomeContent,
 } from './styles'
 import CoverImage from '../../../public/assets/cover.png'
 import Logo from '../../../public/assets/logo.svg'
 import { SignUpModal } from '@/components/SignUpModal'
-import { CustomInput } from '@/components/shared/Input'
 import { CustomLabel } from '@/components/shared/Label'
 import { InputContainer } from '@/components/shared/InputContainer'
 import { FormErrors } from '@/components/shared/FormErrors'
@@ -100,7 +100,7 @@ export default function Login() {
           <FormContainer onSubmit={handleSubmit(handleSignIn)}>
             <InputContainer>
               <CustomLabel>Your e-mail here</CustomLabel>
-              <CustomInput
+              <Input
                 placeholder="myuser@email.com"
                 {...register('email')}
               />
@@ -109,7 +109,7 @@ export default function Login() {
 
             <InputContainer>
               <CustomLabel>Your password here</CustomLabel>
-              <CustomInput
+              <Input
                 type="password"
                 placeholder="password"
                 {...register('password')}
