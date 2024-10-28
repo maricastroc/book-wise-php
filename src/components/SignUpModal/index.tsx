@@ -21,6 +21,7 @@ import { FormErrors } from '../shared/FormErrors'
 import { InputContainer } from '../shared/InputContainer'
 import { CustomButton } from '../shared/Button'
 import { useRef } from 'react'
+import { simulateDelay } from '@/utils/simulateDelay'
 
 interface SignUpModalProps {
   onClose: () => void
@@ -57,6 +58,7 @@ export function SignUpModal({ onClose }: SignUpModalProps) {
     register,
     handleSubmit,
     setValue,
+    reset,
     watch,
     formState: { isSubmitting, errors },
   } = useForm<SignUpFormData>({
@@ -97,17 +99,21 @@ export function SignUpModal({ onClose }: SignUpModalProps) {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
-    console.log(file)
     if (file) setValue('avatar_url', file)
   }
 
   const handleFileButtonClick = () => {
     inputFileRef.current?.click();
   };
-console.log(watch())
+
+  const handleClickOutside = async () => {
+    reset()
+    await simulateDelay()
+  }
+
   return (
     <Dialog.Portal>
-      <Overlay className="DialogOverlay" />
+      <Overlay className="DialogOverlay" onClick={handleClickOutside} />
 
       <Content className="DialogContent">
         <CloseButton>

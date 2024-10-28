@@ -7,8 +7,10 @@ export const globalStyles = globalCss({
     boxSizing: 'border-box',
 
     ':focus': {
-      outline: 'transparent',
+      outline: '1px solid $purple100',
       boxShadow: '0 0 0 2px rgba(37, 45, 74, 1)',
+      borderRadius: 8,
+      border: 'solid 1px transparent',
     },
   },
 
