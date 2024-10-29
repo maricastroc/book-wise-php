@@ -4,22 +4,20 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
-require "models/Book.php";
-
-require "models/User.php";
-
-require "models/Rating.php";
-
-require "Flash.php";
-
-session_start();
-
-require "functions.php";
-
 $config = require "config.php";
 
-require 'Database.php';
+require_once "models/Book.php";
+require_once "models/User.php";
+require_once "models/Rating.php";
+require_once "Flash.php";
 
-require 'Validation.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-require "routes.php";
+require_once "functions.php";
+require_once "Database.php";
+require_once "Validation.php";
+
+require_once "routes.php";
+

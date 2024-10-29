@@ -13,6 +13,7 @@ import {
 } from './styles'
 import { StarsRating } from '../StarsRating'
 import { useRouter } from 'next/router'
+import { getDateFormattedAndRelative } from '@/utils/getFormattedDate'
 
 interface ReviewCardProps {
   user_id: number
@@ -35,9 +36,13 @@ export function ReviewCard({
   description,
   avatar_url,
   cover_url,
+  created_at,
   rating,
   ...rest
 }: ReviewCardProps) {
+  const { dateFormatted, dateRelativeToNow, dateString } =
+  getDateFormattedAndRelative(created_at)
+
   const router = useRouter()
 
   return (
@@ -52,7 +57,9 @@ export function ReviewCard({
           />
           <NameAndDate>
             <p>{name}</p>
-            <time>7 minutes ago</time>
+            <time title={dateFormatted} dateTime={dateString}>
+              {dateRelativeToNow}
+            </time>
           </NameAndDate>
         </UserInfo>
         <StarsRating rating={rating} />
@@ -71,6 +78,8 @@ export function ReviewCard({
           </BookDescription>
         </BookDetails>
       </BookContainer>
+
+      
     </Container>
   )
 }

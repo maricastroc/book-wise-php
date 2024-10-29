@@ -1,5 +1,5 @@
 <?php
-dump($_POST);
+
 $data = [
     'name' => $_POST['name'] ?? '',
     'email' => $_POST['email'] ?? '',

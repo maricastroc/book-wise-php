@@ -7,16 +7,15 @@ import {
   PopularBooksCardsContainer,
   PopularBooksCardsContent,
   PopularBooksTitle,
-  RecentAndLastRead,
-  RecentCardsContainer,
-  RecentCardsContent,
-  RecentCardsTitle,
+  LastRatingsWrapper,
+  LastRatingsContainer,
+  LastRatingsContent,
+  LastRatingsTitle,
 } from './styles'
 import { CaretRight, ChartLineUp } from 'phosphor-react'
 import { PopularBookCard } from '@/components/PopularBookCard'
 import { NextSeo } from 'next-seo'
 import { LateralMenu } from '@/components/LateralMenu'
-import { lastRatings } from '../../data/lastRatings'
 import { books } from '../../data/books'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -24,6 +23,7 @@ import { Sidebar } from '@/components/Sidebar'
 import { ReviewCard } from '@/components/ReviewCard'
 import { BookProps } from '@/@types/book'
 import axios from 'axios'
+import { SkeletonReviewCard } from '@/components/SkeletonReviewCard'
 
 interface LatestRatingProps {
   id: number
@@ -41,13 +41,10 @@ interface LatestRatingProps {
 
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false)
-
   const [selectedBook, setSelectedBook] = useState<BookProps | null>(null)
-
   const [openLateralMenu, setOpenLateralMenu] = useState(false)
-
-  const [latestRatings, setLatestRatings] = useState<null | LatestRatingProps[]>(null)
-
+  const [latestRatings, setLatestRatings] = useState<LatestRatingProps[] | null>(null)
+  const [loading, setLoading] = useState(true) // Adicione uma flag de loading
   const router = useRouter()
 
   useEffect(() => {
@@ -59,20 +56,18 @@ export default function Home() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  function handleCloseLateralMenu() {
-    setOpenLateralMenu(false)
-  }
-console.log(latestRatings)
   useEffect(() => {
     const fetchLatestReviews = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/latest-reviews`)
+        const response = await axios.get(`http://localhost:8000/getLatestReviews`)
         
         if (response?.data && response?.data?.reviews) {
           setLatestRatings(response.data.reviews)
         }
       } catch (error) {
         console.error('Error fetching latest ratings:', error)
+      } finally {
+        setLoading(false) // Mude a flag de loading aqui
       }
     }
 
@@ -84,7 +79,7 @@ console.log(latestRatings)
       <NextSeo title="Home | Book Wise" />
       <Container>
         {openLateralMenu && (
-          <LateralMenu book={selectedBook} onClose={handleCloseLateralMenu} />
+          <LateralMenu book={selectedBook} onClose={() => setOpenLateralMenu(false)} />
         )}
         {isMobile ? <MobileHeader /> : <Sidebar />}
         <HomeContainer>
@@ -93,31 +88,42 @@ console.log(latestRatings)
             <h2>Home</h2>
           </Heading>
           <HomeContent>
-            <RecentAndLastRead>
-              <RecentCardsContainer>
-                <RecentCardsTitle>Last Ratings</RecentCardsTitle>
-                <RecentCardsContent>
-                  {(latestRatings && latestRatings.length > 0) &&
-                    latestRatings.map((rating) => (
-                      <ReviewCard
-                        key={rating.id}
-                        user_id={rating.user_id}
-                        avatar_url={rating.user_avatar_url}
-                        title={rating.book_title}
-                        description={rating.review}
-                        rating={rating.rating}
-                        name={rating.user_name}
-                        cover_url={rating.book_image_url}
-                        author={rating.book_author}
-                        created_at={rating.created_at.toString()}
-                        onClick={() => {
-                          console.log(null)
-                        }}
-                      />
-                    ))}
-                </RecentCardsContent>
-              </RecentCardsContainer>
-            </RecentAndLastRead>
+            <LastRatingsWrapper>
+              <LastRatingsContainer>
+                <LastRatingsTitle>Last Ratings</LastRatingsTitle>
+                <LastRatingsContent>
+                  {loading ? (
+                    Array.from({ length: 6 }, (_, index) => (
+                      <SkeletonReviewCard />
+                    ))
+                  ) : (
+                    (!latestRatings || latestRatings.length === 0) ? (
+                      Array.from({ length: 6 }, (_, index) => (
+                        <SkeletonReviewCard />
+                      ))
+                    ) : (
+                      latestRatings.map((rating) => (
+                        <ReviewCard
+                          key={rating.id}
+                          user_id={rating.user_id}
+                          avatar_url={rating.user_avatar_url}
+                          title={rating.book_title}
+                          description={rating.review}
+                          rating={rating.rating}
+                          name={rating.user_name}
+                          cover_url={rating.book_image_url}
+                          author={rating.book_author}
+                          created_at={rating.created_at.toString()}
+                          onClick={() => {
+                            console.log(null)
+                          }}
+                        />
+                      ))
+                    )
+                  )}
+                </LastRatingsContent>
+              </LastRatingsContainer>
+            </LastRatingsWrapper>
             <PopularBooksCardsContainer>
               <PopularBooksTitle>
                 <p>Popular Books</p>

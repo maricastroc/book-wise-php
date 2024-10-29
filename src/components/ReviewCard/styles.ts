@@ -17,6 +17,8 @@ export const Container = styled('div', {
     backgroundColor: '$gray600',
     transition: '200ms ease-in-out',
   },
+
+
 })
 
 export const Header = styled('div', {
