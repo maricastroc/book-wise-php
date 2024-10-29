@@ -25,12 +25,28 @@ import { ReviewCard } from '@/components/ReviewCard'
 import { BookProps } from '@/@types/book'
 import axios from 'axios'
 
+interface LatestRatingProps {
+  id: number
+  book_author: string
+  book_id: number
+  book_title: string
+  book_image_url: string
+  created_at: string
+  rating: number
+  review: string
+  user_avatar_url: string
+  user_id: number
+  user_name: string
+}
+
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false)
 
   const [selectedBook, setSelectedBook] = useState<BookProps | null>(null)
 
   const [openLateralMenu, setOpenLateralMenu] = useState(false)
+
+  const [latestRatings, setLatestRatings] = useState<null | LatestRatingProps[]>(null)
 
   const router = useRouter()
 
@@ -46,19 +62,22 @@ export default function Home() {
   function handleCloseLateralMenu() {
     setOpenLateralMenu(false)
   }
-
+console.log(latestRatings)
   useEffect(() => {
-    const fetchBookDetails = async () => {
+    const fetchLatestReviews = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/book?id=1`)
-        console.log(response)
+        const response = await axios.get(`http://localhost:8000/api/latest-reviews`)
+        
+        if (response?.data && response?.data?.reviews) {
+          setLatestRatings(response.data.reviews)
+        }
       } catch (error) {
-        console.error('Erro ao buscar detalhes do livro:', error)
+        console.error('Error fetching latest ratings:', error)
       }
     }
 
-    fetchBookDetails()
-  }, []) // Reexecuta a chamada se o bookId mudar
+    fetchLatestReviews()
+  }, [])
 
   return (
     <>
@@ -78,18 +97,19 @@ export default function Home() {
               <RecentCardsContainer>
                 <RecentCardsTitle>Last Ratings</RecentCardsTitle>
                 <RecentCardsContent>
-                  {lastRatings.length > 0 &&
-                    lastRatings.map((rating) => (
+                  {(latestRatings && latestRatings.length > 0) &&
+                    latestRatings.map((rating) => (
                       <ReviewCard
                         key={rating.id}
-                        user_id={rating.user.id}
-                        avatar_url={rating.user.avatar_url}
-                        title={rating.book.name}
-                        description={rating.description}
-                        name={rating.user.name}
-                        cover_url={rating.book.cover_url}
-                        author={rating.book.author}
-                        created_at={rating.book.created_at.toString()}
+                        user_id={rating.user_id}
+                        avatar_url={rating.user_avatar_url}
+                        title={rating.book_title}
+                        description={rating.review}
+                        rating={rating.rating}
+                        name={rating.user_name}
+                        cover_url={rating.book_image_url}
+                        author={rating.book_author}
+                        created_at={rating.created_at.toString()}
                         onClick={() => {
                           console.log(null)
                         }}

@@ -15,11 +15,12 @@ import { StarsRating } from '../StarsRating'
 import { useRouter } from 'next/router'
 
 interface ReviewCardProps {
-  user_id: string
+  user_id: number
   name: string
   title: string
   author: string
   description: string
+  rating: number
   cover_url: string
   avatar_url: string
   created_at: string
@@ -34,6 +35,7 @@ export function ReviewCard({
   description,
   avatar_url,
   cover_url,
+  rating,
   ...rest
 }: ReviewCardProps) {
   const router = useRouter()
@@ -53,7 +55,7 @@ export function ReviewCard({
             <time>7 minutes ago</time>
           </NameAndDate>
         </UserInfo>
-        <StarsRating rating={3} />
+        <StarsRating rating={rating} />
       </Header>
       <Separator />
       <BookContainer {...rest}>

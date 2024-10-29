@@ -34,7 +34,7 @@ if (!empty($validations)) {
     exit();
 }
 
-$dir = "../public/data/users/images/";
+$dir = "data/users/images/";
 if (!is_dir($dir)) {
     mkdir($dir, 0755, true);
 }

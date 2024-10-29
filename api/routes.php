@@ -7,19 +7,24 @@ $controller = trim($path, '/') ?: 'index';
 
 if ($controller === 'api/book') {
     require "controllers/book.controller.php"; 
-    getBookById(); // Chame a função que obtém um livro por ID
-    exit(); // Saia após a resposta do livro
+    getBookById();
+    exit();
 }
 
 if ($controller === 'api/login') {
     require "controllers/login.controller.php"; 
-    exit(); // Saia após a resposta do livro
+    exit();
+}
+
+if ($controller === 'api/latest-reviews') {
+    require "controllers/latest-reviews.controller.php";
+    getLatestReviews();
+    exit();
 }
 
 if ($controller === 'api/register-user') {
     require "controllers/register-user.controller.php"; 
-    exit(); // Saia após a resposta do livro
+    exit();
 }
 
-// Para outras rotas, carregue o controlador correspondente
 require "controllers/{$controller}.controller.php";
