@@ -107,7 +107,7 @@ export const DeleteAndEdit = styled('div', {
   },
 })
 
-export const BookDescription = styled('div', {
+export const BookReview = styled('div', {
   maxHeight: '10rem',
   marginTop: '1.5rem',
   position: 'relative',

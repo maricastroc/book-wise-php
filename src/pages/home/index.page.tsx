@@ -20,31 +20,19 @@ import { books } from '../../data/books'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Sidebar } from '@/components/Sidebar'
-import { ReviewCard } from '@/components/ReviewCard'
+import { RatingCard } from '@/components/RatingCard'
 import { BookProps } from '@/@types/book'
 import axios from 'axios'
-import { SkeletonReviewCard } from '@/components/SkeletonReviewCard'
-
-interface LatestRatingProps {
-  id: number
-  book_author: string
-  book_id: number
-  book_title: string
-  book_image_url: string
-  created_at: string
-  rating: number
-  review: string
-  user_avatar_url: string
-  user_id: number
-  user_name: string
-}
+import { SkeletonRatingCard } from '@/components/SkeletonRatingCard'
+import { RatingProps } from '@/@types/rating'
 
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false)
+  const [popularBooks, setPopularBooks] = useState<BookProps[] | null>(null)
   const [selectedBook, setSelectedBook] = useState<BookProps | null>(null)
   const [openLateralMenu, setOpenLateralMenu] = useState(false)
-  const [latestRatings, setLatestRatings] = useState<LatestRatingProps[] | null>(null)
-  const [loading, setLoading] = useState(true) // Adicione uma flag de loading
+  const [latestRatings, setLatestRatings] = useState<RatingProps[] | null>(null)
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
 
   useEffect(() => {
@@ -57,22 +45,43 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    const fetchLatestReviews = async () => {
+    const fetchLatestRatings = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/getLatestReviews`)
+        const response = await axios.get(`http://localhost:8000/getLatestRatings`)
         
-        if (response?.data && response?.data?.reviews) {
-          setLatestRatings(response.data.reviews)
+        if (response?.data) {
+          setLatestRatings(response.data)
         }
       } catch (error) {
         console.error('Error fetching latest ratings:', error)
       } finally {
-        setLoading(false) // Mude a flag de loading aqui
+        setLoading(false)
       }
     }
 
-    fetchLatestReviews()
+    fetchLatestRatings()
   }, [])
+
+  useEffect(() => {
+    const fetchPopularBooks = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/getPopularBooks`)
+        
+        if (response?.data) {
+          setPopularBooks(response.data)
+          setSelectedBook(response.data[0])
+        }
+      } catch (error) {
+        console.error('Error fetching latest ratings:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPopularBooks()
+  }, [])
+
+
 
   return (
     <>
@@ -94,28 +103,22 @@ export default function Home() {
                 <LastRatingsContent>
                   {loading ? (
                     Array.from({ length: 6 }, (_, index) => (
-                      <SkeletonReviewCard />
+                      <SkeletonRatingCard key={index} />
                     ))
                   ) : (
                     (!latestRatings || latestRatings.length === 0) ? (
                       Array.from({ length: 6 }, (_, index) => (
-                        <SkeletonReviewCard />
+                        <SkeletonRatingCard key={index} />
                       ))
                     ) : (
                       latestRatings.map((rating) => (
-                        <ReviewCard
+                        <RatingCard
                           key={rating.id}
-                          user_id={rating.user_id}
-                          avatar_url={rating.user_avatar_url}
-                          title={rating.book_title}
-                          description={rating.review}
-                          rating={rating.rating}
-                          name={rating.user_name}
-                          cover_url={rating.book_image_url}
-                          author={rating.book_author}
-                          created_at={rating.created_at.toString()}
+                          user={rating.user}
+                          book={rating.book}
+                          rating={rating}
                           onClick={() => {
-                            console.log(null)
+                            setOpenLateralMenu(true)
                           }}
                         />
                       ))
@@ -133,11 +136,12 @@ export default function Home() {
                 </span>
               </PopularBooksTitle>
               <PopularBooksCardsContent>
-                {books.length > 0 &&
-                  books.map((book) => (
+                {(popularBooks && popularBooks.length > 0) &&
+                  popularBooks.map((book) => (
                     <PopularBookCard
                       key={book.id}
                       book={book}
+                      averageRating={book?.average_rating}
                       onClick={() => {
                         setSelectedBook(book)
                         setOpenLateralMenu(true)

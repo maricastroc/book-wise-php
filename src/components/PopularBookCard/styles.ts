@@ -12,7 +12,7 @@ export const Container = styled('div', {
   position: 'relative',
 
   '@media (min-width: 1200px)': {
-    padding: '1.5rem',
+    padding: '1.2rem',
   },
 
   '&:hover': {
@@ -50,9 +50,22 @@ export const BookData = styled('div', {
 })
 
 export const BookCover = styled('img', {
-  width: '4.5rem',
+  width: '4.8rem',
   height: 'auto',
   borderRadius: 8,
+})
+
+export const InfosContainer = styled('div', {
+  marginTop: '0.5rem',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  gap: '0.2rem',
+
+  p: {
+    color: '$gray400',
+    fontSize: '0.8rem',
+  },
 })
 
 export const ReadNotice = styled('div', {

@@ -1,6 +1,6 @@
 export interface UserProps {
-  avatar_url?: string | undefined
-  email?: string
-  id?: string
-  name?: string
+  avatar_url: string
+  email: string
+  id: number
+  name: string
 }

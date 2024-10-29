@@ -9,7 +9,8 @@ class Book
   public $author;
   public $pages_number;
   public $publishing_year;
-  public $image_url;
+  public $cover_url;
+  public $average_rating;
   public $ratings;
 
   public static function make($item)
@@ -23,7 +24,8 @@ class Book
     $book->author = $item['author'];
     $book->pages_number = $item['pages_number'];
     $book->publishing_year = $item['publishing_year'];
-    $book->image_url = $item['image_url'];
+    $book->cover_url = $item['cover_url'];
+    $book->average_rating = $item['average_rating'];
     $book->ratings = $item['ratings'];
 
     return $book;
@@ -33,20 +35,20 @@ class Book
   {
     $database = new Database(config('database'));
 
-    $ratings = $database->query(
-      query: "SELECT rating FROM ratings WHERE book_id = :book_id",
+    $rates = $database->query(
+      query: "SELECT rate FROM ratings WHERE book_id = :book_id",
       params: ['book_id' => $this->id]
     )->fetchAll();
 
-    if (empty($ratings)) {
+    if (empty($rates)) {
       return 0;
     }
 
-    $totalRating = array_reduce($ratings, function ($carry, $item) {
-      return $carry + $item['rating'];
+    $totalRate = array_reduce($rates, function ($carry, $item) {
+      return $carry + $item['rate'];
     }, 0);
 
-    return round($totalRating / count($ratings));
+    return round($totalRate / count($rates));
   }
 
   public function getRatingsQuantity(): int

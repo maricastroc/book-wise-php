@@ -10,8 +10,9 @@ $controller = trim($path, '/') ?: 'index';
 $routes = [
     'getBooks' => 'controllers/getBooks.php',
     'signIn' => 'controllers/signIn.php',
-    'getLatestReviews' => 'controllers/getLatestReviews.php',
+    'getLatestRatings' => 'controllers/getLatestRatings.php',
     'authenticateUser' => 'controllers/authenticateUser.php',
+    'getPopularBooks' => 'controllers/getPopularBooks.php',
 ];
 
 if (array_key_exists($controller, $routes)) {

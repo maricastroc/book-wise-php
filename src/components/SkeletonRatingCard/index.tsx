@@ -7,7 +7,7 @@ import {
 import { Skeleton } from '@mui/material';
 
 
-export function SkeletonReviewCard() {
+export function SkeletonRatingCard() {
 
   return (
     <Container>

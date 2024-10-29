@@ -8,6 +8,8 @@ export const Container = styled('div', {
   minWidth: '100vw',
   alignItems: 'center',
   justifyContent: 'center',
+  maxWidth: '100vw',
+  overflowX: 'hidden',
 
   '@media (min-width: 480px)': {
     padding: '0 2rem',

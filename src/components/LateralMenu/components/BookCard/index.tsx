@@ -13,26 +13,16 @@ import {
 } from './styles'
 import { BookOpen, BookmarkSimple } from 'phosphor-react'
 import { categories } from '@/data/categories'
+import { BookProps } from '@/@types/book'
 
 interface Category {
   id: string
   name: string
 }
 
-interface BookCardProps {
-  name: string
-  author: string
-  cover_url: string
-  total_pages: number
-  categories: Category[]
-}
-
-export function BookCard({
-  name,
-  author,
-  cover_url,
-  total_pages,
-}: BookCardProps) {
+export function BookCard({ book }: { book: BookProps }) {
+  const { title, author, cover_url, pages_number } = book;
+  
   const categoryNames = categories?.map((category) => category?.name)
 
   return (
@@ -41,7 +31,7 @@ export function BookCard({
         <BookCover alt="" src={cover_url} />
         <BookInfo>
           <BookData>
-            <h2>{name}</h2>
+            <h2>{title}</h2>
             <p>{author}</p>
           </BookData>
           <RatingContainer>
@@ -68,7 +58,7 @@ export function BookCard({
           <BookOpen />
           <ItemText>
             <p>Pages</p>
-            <h2>{total_pages}</h2>
+            <h2>{pages_number}</h2>
           </ItemText>
         </FooterItem>
       </Footer>

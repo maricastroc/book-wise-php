@@ -19,9 +19,10 @@ export const globalStyles = globalCss({
     color: '$gray100',
     display: 'flex',
     justifyContent: 'center',
-    minWidth: '100vw',
     '-webkit-font-smoothing': 'antialiased',
     minHeight: '100vh',
+    maxWidth: '100vw',
+    overflowX: 'hidden',
 
     '*::-webkit-scrollbar': {
       width: 2,

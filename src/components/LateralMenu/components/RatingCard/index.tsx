@@ -2,7 +2,7 @@ import {
   ActionButton,
   AvatarContainer,
   AvatarDefault,
-  BookDescription,
+  BookReview,
   ButtonsContainer,
   CharacterCounter,
   DeleteAndEdit,
@@ -27,29 +27,29 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
 
-interface RatingCardProps {
-  id?: string
+interface RatingLateralCardProps {
+  id?: number
   avatar_url?: string
   name?: string
-  description?: string
-  userId?: string
+  review?: string
+  userId?: number
   onCloseLateralMenu: () => void
 }
 
 const editReviewCardFormSchema = z.object({
-  description: z
+  review: z
     .string()
     .min(3, { message: 'Please, write your review before submit.' }),
 })
 
 type EditReviewCardFormData = z.infer<typeof editReviewCardFormSchema>
 
-export function RatingCard({
+export function RatingLateralCard({
   avatar_url,
   name,
-  description,
+  review,
   userId,
-}: RatingCardProps) {
+}: RatingLateralCardProps) {
   const {
     register,
     watch,
@@ -57,7 +57,7 @@ export function RatingCard({
   } = useForm<EditReviewCardFormData>({
     resolver: zodResolver(editReviewCardFormSchema),
     defaultValues: {
-      description: description || '',
+      review: review || '',
     },
   })
 
@@ -65,7 +65,7 @@ export function RatingCard({
 
   const [openEditReviewBox, setOpenEditReviewBox] = useState(false)
 
-  const characterCount = watch('description')?.split('').length || 0
+  const characterCount = watch('review')?.split('').length || 0
 
   return (
     <RatingContainer>
@@ -91,11 +91,11 @@ export function RatingCard({
               placeholder="Write your review here"
               maxLength={450}
               spellCheck={false}
-              {...register('description')}
+              {...register('review')}
             />
-            {errors.description && (
+            {errors.review && (
               <FormErrors>
-                <span>{errors.description.message}</span>
+                <span>{errors.review.message}</span>
               </FormErrors>
             )}
             <CharacterCounter>
@@ -120,9 +120,9 @@ export function RatingCard({
             </ButtonsContainer>
           </ReviewFormContainer>
         ) : (
-          <BookDescription>
-            <p>{description}</p>
-          </BookDescription>
+          <BookReview>
+            <p>{review}</p>
+          </BookReview>
         )}
       </RatingContent>
       {myUser && (

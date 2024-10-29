@@ -21,16 +21,16 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import 'react-toastify/dist/ReactToastify.css'
 import { useState } from 'react'
 
-interface ReviewCardFormProps {
+interface RatingCardFormProps {
   avatar_url: string
   name: string
-  bookId: string
-  userId: string | number | undefined
+  bookId: number
+  userId: number
   onClose: () => void
   onCloseLateralMenu: () => void
 }
 
-const reviewCardFormSchema = z.object({
+const ratingCardFormSchema = z.object({
   description: z
     .string()
     .min(3, { message: 'Please, write your review before submit.' }),
@@ -40,13 +40,13 @@ const reviewCardFormSchema = z.object({
     .max(5),
 })
 
-type ReviewCardFormData = z.infer<typeof reviewCardFormSchema>
+type RatingCardFormData = z.infer<typeof ratingCardFormSchema>
 
-export function ReviewCardForm({
+export function RatingCardForm({
   avatar_url,
   name,
   onClose,
-}: ReviewCardFormProps) {
+}: RatingCardFormProps) {
   const [rating, setRating] = useState(0)
 
   const {
@@ -54,8 +54,8 @@ export function ReviewCardForm({
     watch,
     setValue,
     formState: { isSubmitting, errors },
-  } = useForm<ReviewCardFormData>({
-    resolver: zodResolver(reviewCardFormSchema),
+  } = useForm<RatingCardFormData>({
+    resolver: zodResolver(ratingCardFormSchema),
     defaultValues: {
       rating,
     },

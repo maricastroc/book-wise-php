@@ -9,12 +9,11 @@ import {
 } from './styles'
 import { BookCard } from './components/BookCard'
 import { X } from 'phosphor-react'
-import { useState } from 'react'
-import { RatingCard } from './components/RatingCard'
+import { useEffect, useState } from 'react'
+import { RatingLateralCard } from './components/RatingCard'
 import * as Dialog from '@radix-ui/react-dialog'
 import { LoginModal } from '../LoginModal'
-import { myUser } from '../../data/users'
-import { ReviewCardForm } from './components/ReviewCardForm'
+import { RatingCardForm } from './components/RatingCardForm'
 import { RatingProps } from '@/@types/rating'
 import { BookProps } from '@/@types/book'
 
@@ -24,10 +23,29 @@ interface LateralMenuProps {
 }
 
 export function LateralMenu({ book, onClose }: LateralMenuProps) {
-  const [openReviewForm, setOpenReviewForm] = useState(false)
+  const [openRatingForm, setOpenRatingForm] = useState(false)
 
+  const [userId, setUserId] = useState<number | null>(null)
+
+  const [userName, setUserName] = useState<string | null>(null)
+
+  const [userAvatarUrl, setUserAvatarUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('user_id');
+    const parsedUserId = storedUserId ? parseFloat(storedUserId) : null;
+    
+    if (parsedUserId) {
+      setUserId(!isNaN(parsedUserId) ? parsedUserId : null);
+      setUserName(localStorage.getItem('user_name'));
+      setUserAvatarUrl(localStorage.getItem('user_avatar_url'));
+    }
+  }, []);
+
+console.log(book)
   return (
-    <Container>
+    book && (
+      <Container>
       <CloseButton onClick={() => onClose()}>
         <X />
       </CloseButton>
@@ -35,20 +53,16 @@ export function LateralMenu({ book, onClose }: LateralMenuProps) {
       <LateralMenuContainer>
         {book && (
           <BookCard
-            name={book.name}
-            author={book.author}
-            cover_url={book.cover_url}
-            total_pages={book.total_pages}
-            categories={book.categories}
+            book={book}
           />
         )}
         <RatingsContainer>
           <RatingsContentTitle>
             <p>Ratings</p>
-            {myUser && (
-              <span onClick={() => setOpenReviewForm(true)}>Review</span>
+            {userId && (
+              <span onClick={() => setOpenRatingForm(true)}>Review</span>
             )}
-            {myUser && (
+            {userId && (
               <Dialog.Root>
                 <Dialog.Trigger asChild>
                   <span>Review</span>
@@ -57,24 +71,24 @@ export function LateralMenu({ book, onClose }: LateralMenuProps) {
               </Dialog.Root>
             )}
           </RatingsContentTitle>
-          {myUser && openReviewForm && book?.id && (
-            <ReviewCardForm
-              avatar_url={myUser.avatar_url}
-              name={myUser.name}
-              onClose={() => setOpenReviewForm(false)}
+          {userId && userName && openRatingForm && book?.id && (
+            <RatingCardForm
+              avatar_url={userAvatarUrl ?? ''}
+              name={userName}
+              onClose={() => setOpenRatingForm(false)}
               onCloseLateralMenu={() => onClose()}
               bookId={book?.id}
-              userId={myUser.id}
+              userId={userId}
             />
           )}
           <RatingsContent>
             {book?.ratings.map((rating: RatingProps) => (
-              <RatingCard
+              <RatingLateralCard
                 key={rating.id}
                 id={rating.id}
-                avatar_url={rating.user.avatar_url}
+                avatar_url={rating?.user?.avatar_url}
                 name={rating.user.name}
-                description={rating.description}
+                review={rating.review}
                 userId={rating.user.id}
                 onCloseLateralMenu={() => onClose()}
               />
@@ -83,5 +97,6 @@ export function LateralMenu({ book, onClose }: LateralMenuProps) {
         </RatingsContainer>
       </LateralMenuContainer>
     </Container>
+    )
   )
 }

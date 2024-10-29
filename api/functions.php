@@ -39,15 +39,15 @@ function auth() {
   return $_SESSION['auth'];
 }
 
-function calculateAverageRating(array $ratings): int {
-  if (count($ratings) === 0) {
+function calculateAverageRate(array $rates): int {
+  if (count($rates) === 0) {
       return 0;
   }
 
-  $totalRating = 0;
-  foreach ($ratings as $rating) {
-      $totalRating += $rating->rating;
+  $totalRates = 0;
+  foreach ($rates as $rate) {
+      $totalRates += $rate->rate;
   }
 
-  return round($totalRating / count($ratings));
+  return round($totalRates / count($rates));
 }

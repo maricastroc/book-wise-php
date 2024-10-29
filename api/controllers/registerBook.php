@@ -19,15 +19,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $validation = Validation::validate($rules, $_POST);
     $validations = $validation->validations;
 
-    if (empty($_FILES['image_url']['tmp_name'])) {
-        $validations['image_url'] = 'Book cover is required.';
-    } elseif ($_FILES['image_url']['error'] !== UPLOAD_ERR_OK) {
-        $validations['image_url'] = 'Failed to upload image.';
+    if (empty($_FILES['cover_url']['tmp_name'])) {
+        $validations['cover_url'] = 'Book cover is required.';
+    } elseif ($_FILES['cover_url']['error'] !== UPLOAD_ERR_OK) {
+        $validations['cover_url'] = 'Failed to upload image.';
     } else {
-        $imageFileType = strtolower(pathinfo($_FILES['image_url']['name'], PATHINFO_EXTENSION));
+        $imageFileType = strtolower(pathinfo($_FILES['cover_url']['name'], PATHINFO_EXTENSION));
         $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
         if (!in_array($imageFileType, $allowedTypes)) {
-            $validations['image_url'] = 'Only JPG, JPEG, PNG & GIF files are allowed.';
+            $validations['cover_url'] = 'Only JPG, JPEG, PNG & GIF files are allowed.';
         }
     }
 
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newFileName = md5(rand());
     $image = $dir . $newFileName . '.' . $imageFileType;
 
-    if (move_uploaded_file($_FILES['image_url']['tmp_name'], $image)) {
+    if (move_uploaded_file($_FILES['cover_url']['tmp_name'], $image)) {
         $title = htmlspecialchars($_POST['title']);
         $author = htmlspecialchars($_POST['author']);
         $summary = htmlspecialchars($_POST['summary']);
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pages_number = htmlspecialchars($_POST['pages_number']);
 
         $database->query(
-            query: "INSERT INTO books (user_id, title, author, summary, publishing_year, pages_number, image_url) 
+            query: "INSERT INTO books (user_id, title, author, summary, publishing_year, pages_number, cover_url) 
                     VALUES (:user_id, :title, :author, :summary, :publishing_year, :pages_number, :image)",
             class: Rating::class,
             params: [

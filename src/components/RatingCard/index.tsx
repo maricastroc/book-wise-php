@@ -3,45 +3,36 @@ import {
   BookContainer,
   BookCover,
   BookDetails,
-  BookDescription,
   BookInfo,
   Container,
   Header,
   NameAndDate,
   Separator,
   UserInfo,
+  ReviewContainer,
 } from './styles'
 import { StarsRating } from '../StarsRating'
 import { useRouter } from 'next/router'
 import { getDateFormattedAndRelative } from '@/utils/getFormattedDate'
+import { RatingProps } from '@/@types/rating'
+import { UserProps } from '@/@types/user'
+import { BookProps } from '@/@types/book'
 
-interface ReviewCardProps {
-  user_id: number
-  name: string
-  title: string
-  author: string
-  description: string
-  rating: number
-  cover_url: string
-  avatar_url: string
-  created_at: string
+interface RatingCardProps {
+  rating: RatingProps
+  user: UserProps
+  book: BookProps
   onClick: () => void
 }
 
-export function ReviewCard({
-  user_id,
-  title,
-  name,
-  author,
-  description,
-  avatar_url,
-  cover_url,
-  created_at,
+export function RatingCard({
+  book,
+  user,
   rating,
   ...rest
-}: ReviewCardProps) {
+}: RatingCardProps) {
   const { dateFormatted, dateRelativeToNow, dateString } =
-  getDateFormattedAndRelative(created_at)
+  getDateFormattedAndRelative(rating.created_at)
 
   const router = useRouter()
 
@@ -50,32 +41,32 @@ export function ReviewCard({
       <Header>
         <UserInfo>
           <Avatar
-            avatarUrl={avatar_url}
+            avatarUrl={user.avatar_url}
             onClick={() => {
-              router.push(`/profile/${user_id}`)
+              router.push(`/profile/${user.id}`)
             }}
           />
           <NameAndDate>
-            <p>{name}</p>
+            <p>{user.name}</p>
             <time title={dateFormatted} dateTime={dateString}>
               {dateRelativeToNow}
             </time>
           </NameAndDate>
         </UserInfo>
-        <StarsRating rating={rating} />
+        <StarsRating rating={rating.rate} />
       </Header>
       <Separator />
       <BookContainer {...rest}>
-        <BookCover src={cover_url} alt="" />
+        <BookCover src={book.cover_url} alt="" />
         <BookDetails>
           <BookInfo>
-            <h2>{title}</h2>
-            <p>{author}</p>
+            <h2>{book.title}</h2>
+            <p>{book.author}</p>
           </BookInfo>
           <Separator />
-          <BookDescription>
-            <p>{description}</p>
-          </BookDescription>
+          <ReviewContainer>
+            <p>{rating.review}</p>
+          </ReviewContainer>
         </BookDetails>
       </BookContainer>
 
