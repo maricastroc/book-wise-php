@@ -14,7 +14,7 @@ import {
 import Image from 'next/image'
 import SidebarBackground from '../../../public/assets/sidebar.svg'
 import Logo from '../../../public/assets/logo.svg'
-import { Binoculars, ChartLineUp, SignOut } from 'phosphor-react'
+import { Binoculars, Book, ChartLineUp, SignOut } from 'phosphor-react'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/contexts/AuthContenxt'
 import { toast } from 'react-toastify'
@@ -61,6 +61,13 @@ export function Sidebar() {
               >
                 <Binoculars />
                 <p>Explore</p>
+              </Item>
+              <Item
+                active={router.pathname === '/submit'}
+                onClick={() => router.push('/submit')}
+              >
+                <Book />
+                <p>Submit</p>
               </Item>
             </ItemsContainer>
           </SidebarMain>

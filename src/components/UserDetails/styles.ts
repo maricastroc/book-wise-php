@@ -1,7 +1,6 @@
 import { styled } from '../../styles'
 
 export const Container = styled('div', {
-  marginTop: '3rem',
   display: 'flex',
   backgroundColor: 'gray800',
   padding: '1.5rem',
@@ -20,6 +19,7 @@ export const UserInfo = styled('div', {
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
+  width: '100%',
 
   h2: {
     fontSize: '1.25rem',
@@ -44,14 +44,16 @@ export const UserInfoContainer = styled('div', {
   display: 'flex',
   width: '100%',
   flexDirection: 'column',
-  alignItems: 'flex-start',
+  alignItems: 'center',
   justifyContent: 'center',
   gap: '2.5rem',
+  paddingLeft: '6.5rem',
 })
 
 export const UserInfoItem = styled('div', {
   display: 'flex',
   alignItems: 'center',
+  width: '15rem',
   gap: '1rem',
 
   svg: {

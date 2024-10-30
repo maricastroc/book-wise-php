@@ -37,7 +37,7 @@ export const BookData = styled('div', {
   gap: '0.2rem',
 
   h2: {
-    fontSize: '1rem',
+    fontSize: '0.9rem',
     maxHeight: '4.5rem',
     whiteSpace: 'break-spaces',
     overflow: 'scroll',
@@ -46,7 +46,17 @@ export const BookData = styled('div', {
 
   p: {
     color: '$gray400',
-    fontSize: '0.85rem',
+    fontSize: '0.8rem',
+  },
+
+  '@media (min-width: 1200px)': {
+    h2: {
+      fontSize: '1rem',
+    },
+  
+    p: {
+      fontSize: '0.85rem',
+    },
   },
 })
 

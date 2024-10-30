@@ -54,7 +54,8 @@ export const HomeContainer = styled('div', {
   '@media (min-width: 768px)': {
     alignItems: 'flex-start',
     padding: '0 0 0 2rem',
-    maxWidth: '40rem',
+    maxWidth: '100%',
+    paddingLeft: '18rem',
   },
 
   '@media (min-width: 1024px)': {
@@ -67,6 +68,11 @@ export const HomeContainer = styled('div', {
     justifyContent: 'flex-start',
     padding: '0 0 0 2rem',
     maxWidth: '100%',
+    paddingLeft: '18rem',
+  },
+
+  '@media (min-width: 1400px)': {
+    paddingLeft: '21rem',
   },
 })
 

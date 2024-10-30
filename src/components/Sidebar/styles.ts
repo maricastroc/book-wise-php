@@ -3,6 +3,8 @@ import { styled } from '../../styles'
 export const Container = styled('div', {
   display: 'flex',
   flexDirection: 'column',
+  position: 'fixed',
+  left: '1.5rem',
 })
 
 export const BackgroundContainer = styled('div', {

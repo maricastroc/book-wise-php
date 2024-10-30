@@ -1,4 +1,4 @@
-import { Binoculars, ChartLineUp } from 'phosphor-react'
+import { Binoculars, Book, ChartLineUp } from 'phosphor-react'
 import { Container, Item, ItemsContainer } from './styles'
 import { useRouter } from 'next/router'
 
@@ -21,6 +21,13 @@ export function MobileModal() {
         >
           <Binoculars />
           <p>Explore</p>
+        </Item>
+        <Item
+          active={router.pathname === '/submit'}
+          onClick={() => router.push('/submit')}
+        >
+          <Book />
+          <p>Submit</p>
         </Item>
       </ItemsContainer>
     </Container>

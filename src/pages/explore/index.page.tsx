@@ -1,7 +1,7 @@
 import { Binoculars, MagnifyingGlass, X } from 'phosphor-react'
 import {
   Categories,
-  ButtonFilter,
+  CategoryBtn,
   Container,
   ExploreContainer,
   Heading,
@@ -42,7 +42,7 @@ export default function Explore() {
 
   useEffect(() => {
     function handleResize() {
-      setIsMobile(window.innerWidth <= 768)
+      setIsMobile(window.innerWidth <= 980)
     }
     handleResize()
     window.addEventListener('resize', handleResize)
@@ -138,22 +138,22 @@ export default function Explore() {
           </Heading>
           <ExploreContent>
             <Categories>
-              <ButtonFilter
+              <CategoryBtn
                 selected={!selectedCategory}
                 onClick={() => setSelectedCategory(null)}
               >
                 All
-              </ButtonFilter>
+              </CategoryBtn>
               {(categories && categories.length > 0) &&
                 categories.map((category) => {
                   return (
-                    <ButtonFilter
+                    <CategoryBtn
                       selected={selectedCategory?.id === category.id}
                       key={category.id}
                       onClick={() => setSelectedCategory(category)}
                     >
                       {category.name}
-                    </ButtonFilter>
+                    </CategoryBtn>
                   )
                 })}
             </Categories>
