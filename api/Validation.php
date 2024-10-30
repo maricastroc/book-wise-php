@@ -76,7 +76,7 @@ class Validation {
     )->fetch();
 
     if ($result) {
-      $this->validations[] = "E-mail already taken.";
+      $this->validations[] = "The email address is already in use.";
     }
   }
 }

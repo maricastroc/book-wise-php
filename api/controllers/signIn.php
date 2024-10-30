@@ -6,8 +6,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $inputData['email'] ?? '';
     $password = $inputData['password'] ?? '';
 
-    $validations = [];
-    
     $data = [
         'email' => $email,
         'password' => $password,
@@ -15,16 +13,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $rules = [
         'email' => ['required'],
-        'password' => ['min:8'],
+        'password' => ['required'],
     ];
 
     $validation = Validation::validate($rules, $data);
     $validations = $validation->validations;
 
     if (!empty($validations)) {
+        http_response_code(400);
         echo json_encode([
             'status' => 'error',
-            'validations' => $validations
+            'message' => $validations
         ]);
         exit();
     }
@@ -34,9 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($user) {
         if (!password_verify($password, $user->password)) {
+            http_response_code(401);
             echo json_encode([
                 'status' => 'error',
-                'message' => 'Incorrect e-mail or password!'
+                'message' => 'Incorrect e-mail or password.'
             ]);
             exit();
         }
@@ -48,13 +48,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'message' => 'Login successful!',
             'token' => $token,
             'user_id' => $user->id,
-            'user_id' => $user->id,
             'name' => $user->name,
             'avatar_url' => $user->avatar_url
         ]);
         
         exit();
     } else {
+        http_response_code(401); // Retorna código 401 para usuário não encontrado
         echo json_encode([
             'status' => 'error',
             'message' => 'Incorrect e-mail or password!'

@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app'
 import { globalStyles } from '../styles/global'
 import { StyledToastContainer } from './home/styles'
 import 'react-toastify/dist/ReactToastify.css'
+import { AuthProvider } from '@/contexts/AuthContenxt'
 
 globalStyles()
 
@@ -11,8 +12,10 @@ export default function App({
 }: AppProps) {
   return (
     <>
-      <StyledToastContainer />
-      <Component {...pageProps} />
+      <AuthProvider>
+        <StyledToastContainer />
+        <Component {...pageProps} />
+      </AuthProvider>
     </>
   )
 }

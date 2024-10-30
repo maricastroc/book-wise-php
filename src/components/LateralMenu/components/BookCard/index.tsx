@@ -21,8 +21,8 @@ interface Category {
 }
 
 export function BookCard({ book }: { book: BookProps }) {
-  const { title, author, cover_url, pages_number } = book;
-  
+  const { title, author, cover_url, pages_number, average_rating, total_ratings } = book;
+
   const categoryNames = categories?.map((category) => category?.name)
 
   return (
@@ -35,9 +35,9 @@ export function BookCard({ book }: { book: BookProps }) {
             <p>{author}</p>
           </BookData>
           <RatingContainer>
-            <StarsRating rating={3} />
+            <StarsRating rating={average_rating ?? 0} />
             <p>
-              <span>{3}</span> {''}
+              <span>{total_ratings}</span> {''}
               {'ratings'}
             </p>
           </RatingContainer>

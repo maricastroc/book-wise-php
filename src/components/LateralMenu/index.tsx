@@ -16,6 +16,7 @@ import { LoginModal } from '../LoginModal'
 import { RatingCardForm } from './components/RatingCardForm'
 import { RatingProps } from '@/@types/rating'
 import { BookProps } from '@/@types/book'
+import { useAuth } from '@/contexts/AuthContenxt'
 
 interface LateralMenuProps {
   book: BookProps | null
@@ -25,24 +26,8 @@ interface LateralMenuProps {
 export function LateralMenu({ book, onClose }: LateralMenuProps) {
   const [openRatingForm, setOpenRatingForm] = useState(false)
 
-  const [userId, setUserId] = useState<number | null>(null)
+  const { user } = useAuth();
 
-  const [userName, setUserName] = useState<string | null>(null)
-
-  const [userAvatarUrl, setUserAvatarUrl] = useState<string | null>(null)
-
-  useEffect(() => {
-    const storedUserId = localStorage.getItem('user_id');
-    const parsedUserId = storedUserId ? parseFloat(storedUserId) : null;
-    
-    if (parsedUserId) {
-      setUserId(!isNaN(parsedUserId) ? parsedUserId : null);
-      setUserName(localStorage.getItem('user_name'));
-      setUserAvatarUrl(localStorage.getItem('user_avatar_url'));
-    }
-  }, []);
-
-console.log(book)
   return (
     book && (
       <Container>
@@ -59,10 +44,10 @@ console.log(book)
         <RatingsContainer>
           <RatingsContentTitle>
             <p>Ratings</p>
-            {userId && (
+            {user && (
               <span onClick={() => setOpenRatingForm(true)}>Review</span>
             )}
-            {userId && (
+            {user && (
               <Dialog.Root>
                 <Dialog.Trigger asChild>
                   <span>Review</span>
@@ -71,14 +56,14 @@ console.log(book)
               </Dialog.Root>
             )}
           </RatingsContentTitle>
-          {userId && userName && openRatingForm && book?.id && (
+          {user && openRatingForm && book?.id && (
             <RatingCardForm
-              avatar_url={userAvatarUrl ?? ''}
-              name={userName}
+              avatar_url={user?.avatar_url ?? ''}
+              name={user.name}
               onClose={() => setOpenRatingForm(false)}
               onCloseLateralMenu={() => onClose()}
               bookId={book?.id}
-              userId={userId}
+              userId={user.id}
             />
           )}
           <RatingsContent>

@@ -27,9 +27,10 @@ if (empty($_FILES['avatar_url']['tmp_name']) || $_FILES['avatar_url']['error'] !
 }
 
 if (!empty($validations)) {
+    http_response_code(400);
     echo json_encode([
         'status' => 'error',
-        'validations' => $validations
+        'message' => $validations
     ]);
     exit();
 }
@@ -53,11 +54,13 @@ if (move_uploaded_file($_FILES['avatar_url']['tmp_name'], $imagePath)) {
         ]
     );
 
+    http_response_code(201);
     echo json_encode([
         'status' => 'success',
         'message' => 'User successfully registered!'
     ]);
 } else {
+    http_response_code(500);
     echo json_encode([
         'status' => 'error',
         'message' => 'Failed to upload user avatar.'

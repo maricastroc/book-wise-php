@@ -16,7 +16,6 @@ import { CaretRight, ChartLineUp } from 'phosphor-react'
 import { PopularBookCard } from '@/components/PopularBookCard'
 import { NextSeo } from 'next-seo'
 import { LateralMenu } from '@/components/LateralMenu'
-import { books } from '../../data/books'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Sidebar } from '@/components/Sidebar'
@@ -69,7 +68,6 @@ export default function Home() {
         
         if (response?.data) {
           setPopularBooks(response.data)
-          setSelectedBook(response.data[0])
         }
       } catch (error) {
         console.error('Error fetching latest ratings:', error)

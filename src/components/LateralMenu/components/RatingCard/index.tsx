@@ -26,6 +26,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
+import { useAuth } from '@/contexts/AuthContenxt'
 
 interface RatingLateralCardProps {
   id?: number
@@ -62,6 +63,8 @@ export function RatingLateralCard({
   })
 
   const router = useRouter()
+
+  const { user } = useAuth()
 
   const [openEditReviewBox, setOpenEditReviewBox] = useState(false)
 
@@ -101,7 +104,8 @@ export function RatingLateralCard({
             <CharacterCounter>
               <span>{characterCount}</span>/450
             </CharacterCounter>
-            <ButtonsContainer>
+            {user && (
+              <ButtonsContainer>
               <ActionButton
                 className="edit_btn"
                 type="submit"
@@ -118,6 +122,7 @@ export function RatingLateralCard({
                 Cancel
               </ActionButton>
             </ButtonsContainer>
+            )}
           </ReviewFormContainer>
         ) : (
           <BookReview>
@@ -125,7 +130,7 @@ export function RatingLateralCard({
           </BookReview>
         )}
       </RatingContent>
-      {myUser && (
+      {(user?.id === userId) && (
         <>
           <DeleteAndEdit>
             <Dialog.Root>

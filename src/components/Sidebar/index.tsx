@@ -5,7 +5,6 @@ import {
   Container,
   Item,
   ItemsContainer,
-  LoginButton,
   LoginContainer,
   ProfileContainer,
   SidebarContent,
@@ -15,35 +14,25 @@ import {
 import Image from 'next/image'
 import SidebarBackground from '../../../public/assets/sidebar.svg'
 import Logo from '../../../public/assets/logo.svg'
-import { Binoculars, ChartLineUp, SignIn, SignOut } from 'phosphor-react'
+import { Binoculars, ChartLineUp, SignOut } from 'phosphor-react'
 import { useRouter } from 'next/router'
-import { LoginModal } from '../LoginModal'
-import { useEffect, useState } from 'react'
+import { useAuth } from '@/contexts/AuthContenxt'
 import { toast } from 'react-toastify'
 
 export function Sidebar() {
   const router = useRouter()
 
-  const [userId, setUserId] = useState<string | null>(null)
+  const { user, signOut } = useAuth();
 
-  const [userName, setUserName] = useState<string | null>(null)
-
-  const [userAvatarUrl, setUserAvatarUrl] = useState<string | null>(null)
-
-  useEffect(() => {
-    setUserId(localStorage.getItem('user_id'))
-    setUserName(localStorage.getItem('user_name'))
-    setUserAvatarUrl(localStorage.getItem('user_avatar_url'))
-  }, [])
-
-  const handleLogout = () => {
-    localStorage.removeItem('user_id')
-    localStorage.removeItem('user_avatar_url')
-    localStorage.removeItem('token')
-    localStorage.removeItem('user_name')
-
-    router.push('/')
-    toast.success('See you soon!')
+  const handleSignOut = async () => {
+    try {
+      signOut()
+      toast.success('See you soon!')
+      router.push('/')
+    } catch (error) {
+      console.error('Login error:', error)
+      toast.error('Ooops! Something went wrong.')
+    }
   }
 
   return (
@@ -75,14 +64,14 @@ export function Sidebar() {
               </Item>
             </ItemsContainer>
           </SidebarMain>
-          {userId ? (
+          {user ? (
             <ProfileContainer>
               <AvatarContainer>
-                <AvatarDefault src={userAvatarUrl ?? ''} />
+                <AvatarDefault src={user?.avatar_url ?? ''} />
               </AvatarContainer>
               <SignOutContainer>
-                <p>{userName ?? ''}</p>
-                <SignOut onClick={handleLogout} />
+                <p>{user?.name ?? ''}</p>
+                <SignOut onClick={handleSignOut} />
               </SignOutContainer>
             </ProfileContainer>
           ) : (

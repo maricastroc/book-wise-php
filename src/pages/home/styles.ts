@@ -228,6 +228,7 @@ export const StyledToastContainer = styled(ToastContainer, {
     color: '$gray200',
     borderRadius: 4,
     fontFamily: 'Nunito, sans-serif',
+    fontSize: '0.95rem',
   },
 
   '& .Toastify__close-button': {

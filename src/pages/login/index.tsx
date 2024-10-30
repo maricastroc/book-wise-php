@@ -29,6 +29,7 @@ import { CustomLabel } from '@/components/shared/Label'
 import { InputContainer } from '@/components/shared/InputContainer'
 import { FormErrors } from '@/components/shared/FormErrors'
 import { CustomButton } from '@/components/shared/Button'
+import { useAuth } from '@/contexts/AuthContenxt'
 
 const loginFormSchema = z.object({
   email: z.string().min(3, { message: 'E-mail is required.' }),
@@ -39,6 +40,9 @@ type LoginFormData = z.infer<typeof loginFormSchema>
 
 export default function Login() {
   const router = useRouter()
+
+  const { signIn } = useAuth()
+
   const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false)
 
   const {
@@ -52,23 +56,18 @@ export default function Login() {
 
   const handleSignIn = async (data: LoginFormData) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/login', data)
-
-      if (response.data.status === 'success') {
-        localStorage.setItem('token', response.data.token)
-        localStorage.setItem('user_id', response.data.user_id)
-        localStorage.setItem('user_name', response.data.name)
-        localStorage.setItem('user_avatar_url', response.data.avatar_url)
-        toast.success('Welcome to the Book Wise!')
-        router.push('/home')
-      } else {
-        toast.error(response.data.message)
-      }
+      await signIn(data)
+      toast.success('Welcome to the Book Wise!')
+      router.push('/home')
     } catch (error) {
-      console.error('Login error:', error)
+      if (error) {
+        toast.error(error as string)
+        return
+      }
+
+      toast.error('An unexpected error occurred.')
     }
   }
-
   return (
     <>
       <NextSeo title="Login | Book Wise" />

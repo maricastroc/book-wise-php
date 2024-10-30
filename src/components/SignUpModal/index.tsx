@@ -35,7 +35,7 @@ const signUpFormSchema = z
       .min(8, { message: 'Password must be at least 8 characters long.' }),
     password_confirm: z
       .string()
-      .min(8, { message: 'Password confirmation is required.' }),
+      .min(8, { message: 'Password must be at least 8 characters long.' }),
     name: z.string().min(3, { message: 'Name is required.' }),
     avatar_url: z.custom<File>(
       (file) => file instanceof File && file.size > 0,
@@ -77,25 +77,26 @@ export function SignUpModal({ onClose }: SignUpModalProps) {
     formData.append('password', data.password)
     formData.append('name', data.name)
     formData.append('avatar_url', data.avatar_url)
-
+  
     try {
-      await axios.post('http://localhost:8000/api/register-user', formData, {
+      await axios.post('http://localhost:8000/authenticateUser', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-
+  
       toast.success('User successfully registered!')
       onClose()
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        const validationMessages = error.response.data.validations
-          ? Object.values(error.response.data.validations).join(', ')
-          : 'Ooops, something went wrong. Please try again later.'
-        toast.error(validationMessages)
+        const errorMessage = typeof error.response.data.message === 'string'
+          ? error.response.data.message
+          : Object.values(error.response.data.message).join(', ')
+        toast.error(errorMessage)
       } else {
         toast.error('Ooops, something went wrong. Please try again later.')
       }
     }
   }
+  
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -106,14 +107,9 @@ export function SignUpModal({ onClose }: SignUpModalProps) {
     inputFileRef.current?.click();
   };
 
-  const handleClickOutside = async () => {
-    reset()
-    await simulateDelay()
-  }
-
   return (
     <Dialog.Portal>
-      <Overlay className="DialogOverlay" onClick={handleClickOutside} />
+      <Overlay className="DialogOverlay" />
 
       <Content className="DialogContent">
         <CloseButton>
