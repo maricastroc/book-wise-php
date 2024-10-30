@@ -129,6 +129,7 @@ export const FormContainer = styled('div', {
     maxHeight: '100vh',
     overflowY: 'scroll',
     paddingBottom: '2rem',
+    paddingLeft: '0.3rem',
   },
 })
 
@@ -141,24 +142,6 @@ export const FormContent = styled('form', {
 
   '@media (min-width: 980px)': {
     paddingRight: '1rem',
-  },
-})
-
-export const SignUpBtn = styled('button', {
-  backgroundColor: '$transparent',
-  cursor: 'pointer',
-  fontSize: '0.8rem',
-  border: 'none',
-  color: '$gray400',
-  marginTop: '-1rem',
-
-  '&:hover': {
-    color: '$gray300',
-    transition: '200ms',
-  },
-
-  '@media (min-width: 480px)': {
-    fontSize: '0.9rem',
   },
 })
 
@@ -186,7 +169,6 @@ export const Input = styled('input', {
 
 export const TextArea = styled('textarea', {
   width: '100%',
-  marginTop: '1rem',
   backgroundColor: '$gray800',
   padding: '0.875rem 0.875rem 1.25rem',
   border: 'solid 1px $gray500',
@@ -194,7 +176,8 @@ export const TextArea = styled('textarea', {
   height: 164,
   minHeight: 80,
   resize: 'none',
-  color: '$white',
+  color: '$gray200',
+  lineHeight: '1.3rem',
 })
 
 export const ImageInput = styled('div', {
@@ -205,11 +188,11 @@ export const ImageInput = styled('div', {
   fontSize: '0.95rem',
   borderRadius: 10,
 
-  'input': {
+  input: {
     display: 'none',
   },
 
-  'button': {
+  button: {
     backgroundColor: '$gray600',
     color: '$gray100',
     padding: '0.2rem 0.7rem',
@@ -221,16 +204,16 @@ export const ImageInput = styled('div', {
     '&:hover': {
       transition: '200ms',
       backgroundColor: '$gray500',
-  
+
       svg: {
         backgroundColor: '$gray500',
       },
     },
   },
 
-  'span': {
+  span: {
     marginLeft: '0.7rem',
-  }
+  },
 })
 
 export const UserDetailsContainer = styled('div', {
@@ -253,4 +236,3 @@ export const UserDetailsContainer = styled('div', {
     overflow: 'scroll',
   },
 })
-

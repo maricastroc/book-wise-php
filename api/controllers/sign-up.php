@@ -15,6 +15,7 @@ $rules = [
 $validation = Validation::validate($rules, $data);
 $validations = $validation->validations;
 
+// Validação do arquivo do avatar
 if (empty($_FILES['avatar_url']['tmp_name']) || $_FILES['avatar_url']['error'] !== UPLOAD_ERR_OK) {
     $validations['avatar_url'] = 'User avatar is required or failed to upload.';
 } else {
@@ -35,22 +36,29 @@ if (!empty($validations)) {
     exit();
 }
 
-$dir = "data/users/images/";
+// Define o diretório para salvar a imagem
+$dir = "../public/data/users/images/";
 if (!is_dir($dir)) {
     mkdir($dir, 0755, true);
 }
 
-$newFileName = uniqid('avatar_', true) . '.' . $imageFileType;
-$imagePath = $dir . $newFileName;
+// Gera um novo nome de arquivo para a imagem
+$newFileName = uniqid('avatar_', true) . '.' . $imageFileType; // Gera um nome único
+$imagePath = $dir . $newFileName; // Caminho completo do arquivo no servidor
 
+// Move a imagem para o diretório especificado
 if (move_uploaded_file($_FILES['avatar_url']['tmp_name'], $imagePath)) {
+    // Define o caminho relativo que será armazenado no banco de dados
+    $avatarUrl = 'data/users/images/' . $newFileName; // Caminho relativo
+
+    // Insere os dados no banco de dados
     $database->query(
         query: "INSERT INTO users (email, password, name, avatar_url) VALUES (:email, :password, :name, :avatar_url)",
         params: [
             'email' => $data['email'],
             'password' => password_hash($data['password'], PASSWORD_DEFAULT),
             'name' => $data['name'],
-            'avatar_url' => $imagePath
+            'avatar_url' => $avatarUrl // Use o caminho relativo aqui
         ]
     );
 

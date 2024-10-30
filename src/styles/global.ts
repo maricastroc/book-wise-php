@@ -5,12 +5,12 @@ export const globalStyles = globalCss({
     margin: 0,
     padding: 0,
     boxSizing: 'border-box',
-
-    ':focus': {
+    '&:focus': {
       outline: '1px solid $purple100',
       boxShadow: '0 0 0 2px rgba(37, 45, 74, 1)',
       borderRadius: 8,
       border: 'solid 1px transparent',
+      padding: '0 0.5rem',
     },
   },
 
@@ -24,22 +24,31 @@ export const globalStyles = globalCss({
     maxWidth: '100vw',
     overflowX: 'hidden',
 
-    '*::-webkit-scrollbar': {
+    '& *::-webkit-scrollbar': {
       width: 2,
       height: 2,
       borderRadius: 9999,
     },
 
-    '*::-webkit-scrollbar-corner': {
+    '& *::-webkit-scrollbar-corner': {
       backgroundColor: 'transparent',
     },
 
-    '*::-webkit-scrollbar-thumb': {
+    '& *::-webkit-scrollbar-thumb': {
       width: 6,
       backgroundColor: '$gray500',
       borderRadius: 80,
       boxShadow: 'inset 0 0 0px 6px $gray500',
       border: '10px solid transparent',
+    },
+
+    '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+      WebkitAppearance: 'none',
+      margin: 0,
+    },
+
+    '& input[type=number]': {
+      MozAppearance: 'textfield',
     },
   },
 

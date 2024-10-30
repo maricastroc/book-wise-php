@@ -21,7 +21,6 @@ import { FormErrors } from '../shared/FormErrors'
 import { InputContainer } from '../shared/InputContainer'
 import { CustomButton } from '../shared/Button'
 import { useRef } from 'react'
-import { simulateDelay } from '@/utils/simulateDelay'
 
 interface SignUpModalProps {
   onClose: () => void
@@ -52,13 +51,12 @@ const signUpFormSchema = z
 type SignUpFormData = z.infer<typeof signUpFormSchema>
 
 export function SignUpModal({ onClose }: SignUpModalProps) {
-  const inputFileRef = useRef<HTMLInputElement>(null);
+  const inputFileRef = useRef<HTMLInputElement>(null)
 
   const {
     register,
     handleSubmit,
     setValue,
-    reset,
     watch,
     formState: { isSubmitting, errors },
   } = useForm<SignUpFormData>({
@@ -77,19 +75,20 @@ export function SignUpModal({ onClose }: SignUpModalProps) {
     formData.append('password', data.password)
     formData.append('name', data.name)
     formData.append('avatar_url', data.avatar_url)
-  
+
     try {
       await axios.post('http://localhost:8000/sign-up', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-  
+
       toast.success('User successfully registered!')
       onClose()
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        const errorMessage = typeof error.response.data.message === 'string'
-          ? error.response.data.message
-          : Object.values(error.response.data.message).join(', ')
+        const errorMessage =
+          typeof error.response.data.message === 'string'
+            ? error.response.data.message
+            : Object.values(error.response.data.message).join(', ')
         toast.error(errorMessage)
       } else {
         toast.error('Ooops, something went wrong. Please try again later.')
@@ -103,8 +102,8 @@ export function SignUpModal({ onClose }: SignUpModalProps) {
   }
 
   const handleFileButtonClick = () => {
-    inputFileRef.current?.click();
-  };
+    inputFileRef.current?.click()
+  }
 
   return (
     <Dialog.Portal>
@@ -141,20 +140,13 @@ export function SignUpModal({ onClose }: SignUpModalProps) {
 
             <InputContainer>
               <CustomLabel>Your name here</CustomLabel>
-              <Input
-                type="text"
-                placeholder="Jon Doe"
-                {...register('name')}
-              />
+              <Input type="text" placeholder="Jon Doe" {...register('name')} />
               {errors.name && <FormErrors error={errors.name.message} />}
             </InputContainer>
 
             <InputContainer>
               <CustomLabel>Your e-mail here</CustomLabel>
-              <Input
-                placeholder="myuser@email.com"
-                {...register('email')}
-              />
+              <Input placeholder="myuser@email.com" {...register('email')} />
               {errors.email && <FormErrors error={errors.email.message} />}
             </InputContainer>
 

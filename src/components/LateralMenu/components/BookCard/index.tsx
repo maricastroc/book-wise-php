@@ -15,13 +15,15 @@ import { BookOpen, BookmarkSimple } from 'phosphor-react'
 import { categories } from '@/data/categories'
 import { BookProps } from '@/@types/book'
 
-interface Category {
-  id: string
-  name: string
-}
-
 export function BookCard({ book }: { book: BookProps }) {
-  const { title, author, cover_url, pages_number, average_rating, total_ratings } = book;
+  const {
+    title,
+    author,
+    cover_url,
+    pages_number,
+    average_rating,
+    total_ratings,
+  } = book
 
   const categoryNames = book.categories?.map((category) => category?.name)
 

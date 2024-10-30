@@ -25,14 +25,9 @@ interface RatingCardProps {
   onClick: () => void
 }
 
-export function RatingCard({
-  book,
-  user,
-  rating,
-  ...rest
-}: RatingCardProps) {
+export function RatingCard({ book, user, rating, ...rest }: RatingCardProps) {
   const { dateFormatted, dateRelativeToNow, dateString } =
-  getDateFormattedAndRelative(rating.created_at)
+    getDateFormattedAndRelative(rating.created_at)
 
   const router = useRouter()
 
@@ -69,8 +64,6 @@ export function RatingCard({
           </ReviewContainer>
         </BookDetails>
       </BookContainer>
-
-      
     </Container>
   )
 }

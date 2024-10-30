@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
@@ -34,14 +40,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signIn = async (data: { email: string; password: string }) => {
     try {
       const response = await axios.post('http://localhost:8000/sign-in', data)
-  
+
       if (response.data.status === 'success') {
         const { token, user_id, name, avatar_url } = response.data
-  
+
         const userData: User = { id: user_id, name, avatar_url }
         setUser(userData)
         setToken(token)
-  
+
         localStorage.setItem('token', token)
         localStorage.setItem('user', JSON.stringify(userData))
       } else {
@@ -49,9 +55,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        const errorMessage = typeof error.response.data.message === 'string'
-          ? error.response.data.message
-          : Object.values(error.response.data.message).join(', ')
+        const errorMessage =
+          typeof error.response.data.message === 'string'
+            ? error.response.data.message
+            : Object.values(error.response.data.message).join(', ')
         toast.error(errorMessage)
       } else {
         toast.error('Ooops, something went wrong. Please try again later.')

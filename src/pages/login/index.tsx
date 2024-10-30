@@ -5,7 +5,6 @@ import { NextSeo } from 'next-seo'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useState } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
@@ -68,7 +67,7 @@ export default function Login() {
       toast.error('An unexpected error occurred.')
     }
   }
-  
+
   return (
     <>
       <NextSeo title="Login | Book Wise" />
@@ -93,61 +92,58 @@ export default function Login() {
 
         <WelcomeContainer>
           <WelcomeContent>
-          <Heading>
-            <h2>Welcome!</h2>
-            <p>Please, login or enter as a guest.</p>
-          </Heading>
-          <FormContainer onSubmit={handleSubmit(handleSignIn)}>
-            <InputContainer>
-              <CustomLabel>Your e-mail here</CustomLabel>
-              <Input
-                placeholder="myuser@email.com"
-                {...register('email')}
+            <Heading>
+              <h2>Welcome!</h2>
+              <p>Please, login or enter as a guest.</p>
+            </Heading>
+            <FormContainer onSubmit={handleSubmit(handleSignIn)}>
+              <InputContainer>
+                <CustomLabel>Your e-mail here</CustomLabel>
+                <Input placeholder="myuser@email.com" {...register('email')} />
+                {errors.email && <FormErrors error={errors.email.message} />}
+              </InputContainer>
+
+              <InputContainer>
+                <CustomLabel>Your password here</CustomLabel>
+                <Input
+                  type="password"
+                  placeholder="password"
+                  {...register('password')}
+                />
+                {errors.password && (
+                  <FormErrors error={errors.password.message} />
+                )}
+              </InputContainer>
+
+              <Dialog.Root>
+                <Dialog.Trigger asChild>
+                  <SignUpBtn
+                    type="button"
+                    onClick={() => setIsSignUpModalOpen(true)}
+                  >
+                    Still don&apos;t have an account? Click here to sign up!
+                  </SignUpBtn>
+                </Dialog.Trigger>
+                {isSignUpModalOpen && (
+                  <SignUpModal onClose={() => setIsSignUpModalOpen(false)} />
+                )}
+              </Dialog.Root>
+
+              <CustomButton
+                type="submit"
+                content="Sign in"
+                icon={<SignIn size={24} />}
+                disabled={isSubmitting}
               />
-              {errors.email && <FormErrors error={errors.email.message} />}
-            </InputContainer>
-
-            <InputContainer>
-              <CustomLabel>Your password here</CustomLabel>
-              <Input
-                type="password"
-                placeholder="password"
-                {...register('password')}
+              <Divider />
+              <CustomButton
+                type="button"
+                onClick={() => router.push('/home')}
+                content="Access as a guest"
+                icon={<RocketLaunch size={24} />}
+                disabled={isSubmitting}
               />
-              {errors.password && (
-                <FormErrors error={errors.password.message} />
-              )}
-            </InputContainer>
-
-            <Dialog.Root>
-              <Dialog.Trigger asChild>
-                <SignUpBtn
-                  type="button"
-                  onClick={() => setIsSignUpModalOpen(true)}
-                >
-                  Still don't have an account? Click here to sign up!
-                </SignUpBtn>
-              </Dialog.Trigger>
-              {isSignUpModalOpen && (
-                <SignUpModal onClose={() => setIsSignUpModalOpen(false)} />
-              )}
-            </Dialog.Root>
-
-            <CustomButton
-              type="submit"
-              content="Sign in"
-              icon={<SignIn size={24} />}
-              disabled={isSubmitting}
-            />
-            <Divider />
-            <CustomButton
-              type="button"
-              onClick={() => router.push('/home')}
-              content="Access as a guest"
-              icon={<RocketLaunch size={24} />}
-              disabled={isSubmitting}
-            />
-          </FormContainer>
+            </FormContainer>
           </WelcomeContent>
         </WelcomeContainer>
       </Container>

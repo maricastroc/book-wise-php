@@ -12,6 +12,7 @@ class Book
   public $cover_url;
   public $average_rating;
   public $ratings;
+  public $created_at;
 
   public static function make($item)
   {
@@ -27,6 +28,7 @@ class Book
     $book->cover_url = $item['cover_url'];
     $book->average_rating = $item['average_rating'];
     $book->ratings = $item['ratings'];
+    $book->created_at = $item['created_at'];
 
     return $book;
   }

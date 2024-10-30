@@ -48,16 +48,19 @@ export default function Home() {
   useEffect(() => {
     const fetchLatestRatings = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/get-latest-ratings`)
-        
+        const response = await axios.get(
+          `http://localhost:8000/get-latest-ratings`,
+        )
+
         if (response?.data) {
           setLatestRatings(response.data)
         }
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-          const errorMessage = typeof error.response.data.message === 'string'
-            ? error.response.data.message
-            : Object.values(error.response.data.message).join(', ')
+          const errorMessage =
+            typeof error.response.data.message === 'string'
+              ? error.response.data.message
+              : Object.values(error.response.data.message).join(', ')
           toast.error(errorMessage)
         } else {
           toast.error('Ooops, something went wrong. Please try again later.')
@@ -73,16 +76,19 @@ export default function Home() {
   useEffect(() => {
     const fetchPopularBooks = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/get-popular-books`)
-        
+        const response = await axios.get(
+          `http://localhost:8000/get-popular-books`,
+        )
+
         if (response?.data) {
           setPopularBooks(response.data)
         }
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-          const errorMessage = typeof error.response.data.message === 'string'
-            ? error.response.data.message
-            : Object.values(error.response.data.message).join(', ')
+          const errorMessage =
+            typeof error.response.data.message === 'string'
+              ? error.response.data.message
+              : Object.values(error.response.data.message).join(', ')
           toast.error(errorMessage)
         } else {
           toast.error('Ooops, something went wrong. Please try again later.')
@@ -100,7 +106,10 @@ export default function Home() {
       <NextSeo title="Home | Book Wise" />
       <Container>
         {openLateralMenu && (
-          <LateralMenu book={selectedBook} onClose={() => setOpenLateralMenu(false)} />
+          <LateralMenu
+            book={selectedBook}
+            onClose={() => setOpenLateralMenu(false)}
+          />
         )}
         {isMobile ? <MobileHeader /> : <Sidebar />}
         <HomeContainer>
@@ -113,17 +122,15 @@ export default function Home() {
               <LastRatingsContainer>
                 <LastRatingsTitle>Last Ratings</LastRatingsTitle>
                 <LastRatingsContent>
-                  {loading ? (
-                    Array.from({ length: 6 }, (_, index) => (
-                      <SkeletonRatingCard key={index} />
-                    ))
-                  ) : (
-                    (!latestRatings || latestRatings.length === 0) ? (
-                      Array.from({ length: 6 }, (_, index) => (
+                  {loading
+                    ? Array.from({ length: 6 }, (_, index) => (
                         <SkeletonRatingCard key={index} />
                       ))
-                    ) : (
-                      latestRatings.map((rating) => (
+                    : !latestRatings || latestRatings.length === 0
+                    ? Array.from({ length: 6 }, (_, index) => (
+                        <SkeletonRatingCard key={index} />
+                      ))
+                    : latestRatings.map((rating) => (
                         <RatingCard
                           key={rating.id}
                           user={rating.user}
@@ -133,9 +140,7 @@ export default function Home() {
                             setOpenLateralMenu(true)
                           }}
                         />
-                      ))
-                    )
-                  )}
+                      ))}
                 </LastRatingsContent>
               </LastRatingsContainer>
             </LastRatingsWrapper>
@@ -148,28 +153,24 @@ export default function Home() {
                 </span>
               </PopularBooksTitle>
               <PopularBooksCardsContent>
-                {loading ? (
-                    Array.from({ length: 6 }, (_, index) => (
+                {loading
+                  ? Array.from({ length: 6 }, (_, index) => (
                       <SkeletonPopularBook key={index} />
                     ))
-                  ) : (
-                    (!popularBooks || popularBooks.length === 0) ? (
-                      Array.from({ length: 6 }, (_, index) => (
-                        <SkeletonPopularBook key={index} />
-                      ))
-                    ) : (
-                      popularBooks.map((book) => (
-                        <PopularBookCard
-                          key={book.id}
-                          book={book}
-                          onClick={() => {
-                            setSelectedBook(book)
-                            setOpenLateralMenu(true)
-                          }}
-                        />
-                      ))
-                    )
-                  )}
+                  : !popularBooks || popularBooks.length === 0
+                  ? Array.from({ length: 6 }, (_, index) => (
+                      <SkeletonPopularBook key={index} />
+                    ))
+                  : popularBooks.map((book) => (
+                      <PopularBookCard
+                        key={book.id}
+                        book={book}
+                        onClick={() => {
+                          setSelectedBook(book)
+                          setOpenLateralMenu(true)
+                        }}
+                      />
+                    ))}
               </PopularBooksCardsContent>
             </PopularBooksCardsContainer>
           </HomeContent>

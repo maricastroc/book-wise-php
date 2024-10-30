@@ -10,6 +10,7 @@ export const Container = styled('div', {
   justifyContent: 'flex-start',
   minHeight: '100vh',
   overflorX: 'hidden',
+  minWidth: '100vw',
 
   '@media (min-width: 980px)': {
     flexDirection: 'row',
@@ -81,11 +82,11 @@ export const HeadingTitle = styled('div', {
 
   '@media (min-width: 980px)': {
     marginTop: 0,
-    
+
     h2: {
       fontSize: '1.5rem',
     },
-  
+
     svg: {
       fontSize: '2rem',
     },
@@ -196,7 +197,7 @@ export const BooksContainer = styled('div', {
   marginTop: '2rem',
   width: '100%',
   marginBottom: '2rem',
-  
+
   '@media (min-width: 480px)': {
     gap: '1.5rem',
   },

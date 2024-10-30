@@ -15,4 +15,3 @@ export interface BookProps {
   categories: CategoryProps[]
   ratings: RatingProps[]
 }
-

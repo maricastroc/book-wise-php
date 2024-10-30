@@ -1,6 +1,12 @@
 import { BookProps } from '@/@types/book'
 import { StarsRating } from '../StarsRating'
-import { BookCover, BookData, BookInfo, Container, InfosContainer } from './styles'
+import {
+  BookCover,
+  BookData,
+  BookInfo,
+  Container,
+  InfosContainer,
+} from './styles'
 
 interface ExploreCardProps {
   book: BookProps

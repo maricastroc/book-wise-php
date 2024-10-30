@@ -1,5 +1,4 @@
 import { styled } from '../../styles'
-import Link from 'next/link'
 
 export const Container = styled('div', {
   cursor: 'pointer',

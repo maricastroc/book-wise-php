@@ -114,11 +114,11 @@ export const ImageInput = styled('div', {
   fontSize: '0.95rem',
   borderRadius: 10,
 
-  'input': {
+  input: {
     display: 'none',
   },
 
-  'button': {
+  button: {
     backgroundColor: '$gray600',
     color: '$gray100',
     padding: '0.2rem 0.7rem',
@@ -130,16 +130,16 @@ export const ImageInput = styled('div', {
     '&:hover': {
       transition: '200ms',
       backgroundColor: '$gray500',
-  
+
       svg: {
         backgroundColor: '$gray500',
       },
     },
   },
 
-  'span': {
+  span: {
     marginLeft: '0.7rem',
-  }
+  },
 })
 
 export const Input = styled('input', {

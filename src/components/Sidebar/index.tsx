@@ -6,6 +6,7 @@ import {
   Item,
   ItemsContainer,
   LoginContainer,
+  PageBtn,
   ProfileContainer,
   SidebarContent,
   SidebarMain,
@@ -22,7 +23,7 @@ import { toast } from 'react-toastify'
 export function Sidebar() {
   const router = useRouter()
 
-  const { user, signOut } = useAuth();
+  const { user, signOut } = useAuth()
 
   const handleSignOut = async () => {
     try {
@@ -48,26 +49,32 @@ export function Sidebar() {
               quality={100}
             />
             <ItemsContainer>
-              <Item
-                active={router.pathname === '/home'}
-                onClick={() => router.push('/home')}
-              >
-                <ChartLineUp />
-                <p>Home</p>
+              <Item>
+                <PageBtn
+                  onClick={() => router.push('/home')}
+                  active={router.pathname === '/home'}
+                >
+                  <ChartLineUp />
+                  <p>Home</p>
+                </PageBtn>
               </Item>
-              <Item
-                active={router.pathname === '/explore'}
-                onClick={() => router.push('/explore')}
-              >
-                <Binoculars />
-                <p>Explore</p>
+              <Item>
+                <PageBtn
+                  onClick={() => router.push('/explore')}
+                  active={router.pathname === '/explore'}
+                >
+                  <Binoculars />
+                  <p>Explore</p>
+                </PageBtn>
               </Item>
-              <Item
-                active={router.pathname === '/submit'}
-                onClick={() => router.push('/submit')}
-              >
-                <Book />
-                <p>Submit</p>
+              <Item>
+                <PageBtn
+                  onClick={() => router.push('/submit')}
+                  active={router.pathname === '/submit'}
+                >
+                  <Book />
+                  <p>Submit</p>
+                </PageBtn>
               </Item>
             </ItemsContainer>
           </SidebarMain>

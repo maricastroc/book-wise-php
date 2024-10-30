@@ -19,7 +19,6 @@ import { StarsRating } from '@/components/StarsRating'
 import { Trash, Pencil } from 'phosphor-react'
 import { DeleteModal } from '../DeleteModal'
 import * as Dialog from '@radix-ui/react-dialog'
-import { myUser } from '../../../../data/users'
 import { useState } from 'react'
 
 import { useForm } from 'react-hook-form'
@@ -106,22 +105,22 @@ export function RatingLateralCard({
             </CharacterCounter>
             {user && (
               <ButtonsContainer>
-              <ActionButton
-                className="edit_btn"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                Edit
-              </ActionButton>
-              <ActionButton
-                className="cancel_btn"
-                onClick={() => setOpenEditReviewBox(false)}
-                type="button"
-                disabled={isSubmitting}
-              >
-                Cancel
-              </ActionButton>
-            </ButtonsContainer>
+                <ActionButton
+                  className="edit_btn"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  Edit
+                </ActionButton>
+                <ActionButton
+                  className="cancel_btn"
+                  onClick={() => setOpenEditReviewBox(false)}
+                  type="button"
+                  disabled={isSubmitting}
+                >
+                  Cancel
+                </ActionButton>
+              </ButtonsContainer>
             )}
           </ReviewFormContainer>
         ) : (
@@ -130,7 +129,7 @@ export function RatingLateralCard({
           </BookReview>
         )}
       </RatingContent>
-      {(user?.id === userId) && (
+      {user?.id === userId && (
         <>
           <DeleteAndEdit>
             <Dialog.Root>
