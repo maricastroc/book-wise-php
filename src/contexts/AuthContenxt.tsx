@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 interface User {
   id: number
@@ -32,7 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = async (data: { email: string; password: string }) => {
     try {
-      const response = await axios.post('http://localhost:8000/signIn', data)
+      const response = await axios.post('http://localhost:8000/sign-in', data)
   
       if (response.data.status === 'success') {
         const { token, user_id, name, avatar_url } = response.data
@@ -44,14 +45,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.setItem('token', token)
         localStorage.setItem('user', JSON.stringify(userData))
       } else {
-        console.log(response)
         throw new Error(response.data.message || 'Login failed')
       }
-    } catch (error: any) {
-      throw error.response?.data?.message || 'Login failed'
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage = typeof error.response.data.message === 'string'
+          ? error.response.data.message
+          : Object.values(error.response.data.message).join(', ')
+        toast.error(errorMessage)
+      } else {
+        toast.error('Ooops, something went wrong. Please try again later.')
+      }
     }
   }
-  
 
   const signOut = () => {
     setUser(null)

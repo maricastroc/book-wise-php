@@ -23,7 +23,7 @@ interface Category {
 export function BookCard({ book }: { book: BookProps }) {
   const { title, author, cover_url, pages_number, average_rating, total_ratings } = book;
 
-  const categoryNames = categories?.map((category) => category?.name)
+  const categoryNames = book.categories?.map((category) => category?.name)
 
   return (
     <BookContainer>

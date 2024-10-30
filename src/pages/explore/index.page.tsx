@@ -1,4 +1,4 @@
-import { Binoculars, MagnifyingGlass } from 'phosphor-react'
+import { Binoculars, MagnifyingGlass, X } from 'phosphor-react'
 import {
   Categories,
   ButtonFilter,
@@ -16,33 +16,29 @@ import { Sidebar } from '@/components/Sidebar'
 import { ExploreCard } from '@/components/ExploreCard'
 import { LateralMenu } from '@/components/LateralMenu'
 import { NextSeo } from 'next-seo'
-import { books } from '../../data/books'
 import { categories } from '../../data/categories'
 import { BookProps } from '@/@types/book'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import { CategoryProps } from '@/@types/category'
+import { SkeletonPopularBook } from '@/components/SkeletonPopularBook'
 
 export default function Explore() {
   const [isMobile, setIsMobile] = useState(false)
 
-  const [booksList, setBooksList] = useState<BookProps[]>(books)
+  const [books, setBooks] = useState<BookProps[]>()
 
-  const [categorySelected, setCategorySelected] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  const [categories, setCategories] = useState<CategoryProps[] | null>(null)
+
+  const [selectedCategory, setSelectedCategory] = useState<CategoryProps | null>(null)
 
   const [search, setSearch] = useState('')
 
   const [selectedBook, setSelectedBook] = useState<BookProps | null>(null)
 
   const [openLateralMenu, setOpenLateralMenu] = useState(false)
-
-  const filteredBooks = booksList?.filter((book) => {
-    return (
-      book.name
-        .toLowerCase()
-        .includes(search.toLowerCase().replace(/( )+/g, ' ')) ||
-      book.author
-        .toLowerCase()
-        .includes(search.toLowerCase().replace(/( )+/g, ' '))
-    )
-  })
 
   useEffect(() => {
     function handleResize() {
@@ -54,13 +50,60 @@ export default function Explore() {
   }, [])
 
   useEffect(() => {
-    if (categorySelected) {
-      const filteredBooks = books.filter((book) =>
-        book.categories.some((category) => category.name === categorySelected),
-      )
-      setBooksList(filteredBooks)
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/get-categories')
+        
+        if (response?.data) {
+          setCategories(response.data)
+        }
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          const errorMessage = typeof error.response.data.message === 'string'
+            ? error.response.data.message
+            : Object.values(error.response.data.message).join(', ')
+          toast.error(errorMessage)
+        } else {
+          toast.error('Ooops, something went wrong. Please try again later.')
+        }
+      } finally {
+        setLoading(false)
+      }
     }
-  }, [categorySelected])
+
+    fetchCategories()
+  }, [])
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/get-books', {
+          params: {
+            title: search, // exemplo de filtro pelo título
+            author: search, // exemplo de filtro pelo autor
+            category_id: selectedCategory?.id, // exemplo de filtro pela categoria
+          },
+        })
+        
+        if (response?.data) {
+          setBooks(response.data)
+        }
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          const errorMessage = typeof error.response.data.message === 'string'
+            ? error.response.data.message
+            : Object.values(error.response.data.message).join(', ')
+          toast.error(errorMessage)
+        } else {
+          toast.error('Ooops, something went wrong. Please try again later.')
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchBooks()
+  }, [selectedCategory, search])
 
   function handleCloseLateralMenu() {
     setOpenLateralMenu(false)
@@ -88,24 +131,26 @@ export default function Explore() {
                 onChange={(e) => setSearch(e.target.value)}
                 spellCheck={false}
               />
-              <MagnifyingGlass />
+              {(search === '') ? 
+              <MagnifyingGlass /> : 
+              <X onClick={() => setSearch('')}/>}
             </SearchBar>
           </Heading>
           <ExploreContent>
             <Categories>
               <ButtonFilter
-                selected={!categorySelected}
-                onClick={() => setCategorySelected(null)}
+                selected={!selectedCategory}
+                onClick={() => setSelectedCategory(null)}
               >
                 All
               </ButtonFilter>
-              {categories.length > 0 &&
+              {(categories && categories.length > 0) &&
                 categories.map((category) => {
                   return (
                     <ButtonFilter
-                      selected={categorySelected === category.id}
+                      selected={selectedCategory?.id === category.id}
                       key={category.id}
-                      onClick={() => console.log(null)}
+                      onClick={() => setSelectedCategory(category)}
                     >
                       {category.name}
                     </ButtonFilter>
@@ -113,21 +158,28 @@ export default function Explore() {
                 })}
             </Categories>
             <BooksContainer>
-              {filteredBooks.length > 0 &&
-                filteredBooks.map((book) => {
-                  return (
-                    <ExploreCard
-                      key={book.id}
-                      cover_url={book.cover_url}
-                      author={book.author}
-                      name={book.name}
-                      onClick={() => {
-                        setSelectedBook(book)
-                        setOpenLateralMenu(true)
-                      }}
-                    />
-                  )
-                })}
+                {loading ? (
+                    Array.from({ length: 6 }, (_, index) => (
+                      <SkeletonPopularBook key={index} />
+                    ))
+                  ) : (
+                    (!books || books.length === 0) ? (
+                      Array.from({ length: 6 }, (_, index) => (
+                        <SkeletonPopularBook key={index} />
+                      ))
+                    ) : (
+                      books.map((book) => (
+                        <ExploreCard
+                          key={book.id}
+                          book={book}
+                          onClick={() => {
+                            setSelectedBook(book)
+                            setOpenLateralMenu(true)
+                          }}
+                        />
+                      ))
+                    )
+                  )}
             </BooksContainer>
           </ExploreContent>
         </ExploreContainer>

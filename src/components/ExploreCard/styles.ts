@@ -50,6 +50,19 @@ export const BookData = styled('div', {
   },
 })
 
+export const InfosContainer = styled('div', {
+  marginTop: '0.5rem',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  gap: '0.2rem',
+
+  p: {
+    color: '$gray400',
+    fontSize: '0.8rem',
+  },
+})
+
 export const ReadNotice = styled('div', {
   display: 'flex',
   position: 'absolute',

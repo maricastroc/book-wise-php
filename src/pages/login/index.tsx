@@ -68,6 +68,7 @@ export default function Login() {
       toast.error('An unexpected error occurred.')
     }
   }
+  
   return (
     <>
       <NextSeo title="Login | Book Wise" />

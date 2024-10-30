@@ -37,7 +37,8 @@ foreach ($booksWithRatings as $book) {
         'created_at' => $book['created_at'],
         'average_rating' => $book['average_rating'] ? (float) $book['average_rating'] : null,
         'total_ratings' => (int) $book['total_ratings'],
-        'ratings' => []
+        'ratings' => [],
+        'categories' => []
     ];
 }
 
@@ -73,6 +74,25 @@ foreach ($ratings as $rating) {
             'name' => $rating['user_name'],
             'avatar_url' => $rating['user_avatar_url']
         ]
+    ];
+}
+
+$categories = $database->query(
+    "SELECT 
+        bc.book_id, 
+        c.id AS category_id, 
+        c.name AS category_name
+    FROM book_categories bc
+    JOIN categories c ON bc.category_id = c.id
+    WHERE bc.book_id IN (" . implode(',', array_keys($popularBooks)) . ")"
+)->fetchAll(PDO::FETCH_ASSOC);
+
+foreach ($categories as $category) {
+    $bookId = $category['book_id'];
+    
+    $popularBooks[$bookId]['categories'][] = [
+        'id' => $category['category_id'],
+        'name' => $category['category_name']
     ];
 }
 

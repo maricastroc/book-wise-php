@@ -1,28 +1,26 @@
+import { BookProps } from '@/@types/book'
 import { StarsRating } from '../StarsRating'
-import { BookCover, BookData, BookInfo, Container } from './styles'
+import { BookCover, BookData, BookInfo, Container, InfosContainer } from './styles'
 
 interface ExploreCardProps {
-  cover_url: string
-  name: string
-  author: string
+  book: BookProps
   onClick: () => void
 }
 
-export function ExploreCard({
-  cover_url,
-  name,
-  author,
-  ...rest
-}: ExploreCardProps) {
+export function ExploreCard({ book, ...rest }: ExploreCardProps) {
+  console.log(book)
   return (
     <Container {...rest}>
-      <BookCover alt="" src={cover_url} />
+      <BookCover alt="" src={book.cover_url} />
       <BookInfo>
         <BookData>
-          <h2>{name}</h2>
-          <p>{author}</p>
+          <h2>{book.title}</h2>
+          <p>{book.author}</p>
         </BookData>
-        <StarsRating rating={3} />
+        <InfosContainer>
+          <p>{`(${book.total_ratings ?? 0} ratings)`}</p>
+          <StarsRating rating={book.average_rating ?? 0} />
+        </InfosContainer>
       </BookInfo>
     </Container>
   )

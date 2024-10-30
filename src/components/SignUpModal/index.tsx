@@ -79,7 +79,7 @@ export function SignUpModal({ onClose }: SignUpModalProps) {
     formData.append('avatar_url', data.avatar_url)
   
     try {
-      await axios.post('http://localhost:8000/authenticateUser', formData, {
+      await axios.post('http://localhost:8000/sign-up', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
   
@@ -96,7 +96,6 @@ export function SignUpModal({ onClose }: SignUpModalProps) {
       }
     }
   }
-  
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]

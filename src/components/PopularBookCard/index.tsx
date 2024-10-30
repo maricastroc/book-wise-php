@@ -4,11 +4,10 @@ import { BookCover, BookData, BookInfo, Container, InfosContainer } from './styl
 
 interface PopularBookCardProps {
   book: BookProps
-  averageRating?: number
   onClick: () => void
 }
 
-export function PopularBookCard({ book, averageRating, ...rest }: PopularBookCardProps) {
+export function PopularBookCard({ book, ...rest }: PopularBookCardProps) {
   return (
     <Container {...rest}>
       <BookCover src={book.cover_url} />
@@ -19,7 +18,7 @@ export function PopularBookCard({ book, averageRating, ...rest }: PopularBookCar
         </BookData>
         <InfosContainer>
           <p>{`(${book.total_ratings ?? 0} ratings)`}</p>
-          <StarsRating rating={averageRating ?? 0} />
+          <StarsRating rating={book?.average_rating ?? 0} />
         </InfosContainer>
       </BookInfo>
     </Container>

@@ -27,15 +27,15 @@ export function LateralMenu({ book, onClose }: LateralMenuProps) {
   const [openRatingForm, setOpenRatingForm] = useState(false)
 
   const { user } = useAuth();
-
+console.log(user);
   return (
     book && (
       <Container>
+      <ContainerOverlay onClick={() => onClose()} />
+      <LateralMenuContainer>
       <CloseButton onClick={() => onClose()}>
         <X />
       </CloseButton>
-      <ContainerOverlay onClick={() => onClose()} />
-      <LateralMenuContainer>
         {book && (
           <BookCard
             book={book}
@@ -44,16 +44,15 @@ export function LateralMenu({ book, onClose }: LateralMenuProps) {
         <RatingsContainer>
           <RatingsContentTitle>
             <p>Ratings</p>
-            {user && (
-              <span onClick={() => setOpenRatingForm(true)}>Review</span>
-            )}
-            {user && (
+            {user ? (
+              <span onClick={() => setOpenRatingForm(!openRatingForm)}>Review</span>
+            ) : (
               <Dialog.Root>
-                <Dialog.Trigger asChild>
-                  <span>Review</span>
-                </Dialog.Trigger>
-                <LoginModal />
-              </Dialog.Root>
+            <Dialog.Trigger asChild>
+              <span>Review</span>
+            </Dialog.Trigger>
+            <LoginModal />
+          </Dialog.Root>
             )}
           </RatingsContentTitle>
           {user && openRatingForm && book?.id && (

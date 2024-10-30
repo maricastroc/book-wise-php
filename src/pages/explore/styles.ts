@@ -8,7 +8,8 @@ export const Container = styled('div', {
   width: '100%',
   alignItems: 'center',
   justifyContent: 'flex-start',
-  height: '100vh',
+  minHeight: '100vh',
+  minWidth: '100vw',
 
   '@media (min-width: 768px)': {
     flexDirection: 'row',
@@ -36,6 +37,7 @@ export const ExploreContainer = styled('div', {
   marginTop: '2rem',
 
   '@media (min-width: 768px)': {
+    justifyContent: 'flex-start',
     alignItems: 'flex-start',
     padding: '0 0 0 2rem',
     maxWidth: '45rem',
@@ -111,6 +113,7 @@ export const SearchBar = styled('div', {
 
     '&:focus': {
       boxShadow: 'none',
+      outline: 'none',
     },
 
     '&::placeholder': {
@@ -119,6 +122,7 @@ export const SearchBar = styled('div', {
   },
 
   svg: {
+    cursor: 'pointer',
     fontSize: '1.2rem',
     color: '$gray500',
   },

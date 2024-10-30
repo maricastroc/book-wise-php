@@ -24,6 +24,8 @@ import { BookProps } from '@/@types/book'
 import axios from 'axios'
 import { SkeletonRatingCard } from '@/components/SkeletonRatingCard'
 import { RatingProps } from '@/@types/rating'
+import { SkeletonPopularBook } from '@/components/SkeletonPopularBook'
+import { toast } from 'react-toastify'
 
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false)
@@ -46,13 +48,20 @@ export default function Home() {
   useEffect(() => {
     const fetchLatestRatings = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/getLatestRatings`)
+        const response = await axios.get(`http://localhost:8000/get-latest-ratings`)
         
         if (response?.data) {
           setLatestRatings(response.data)
         }
       } catch (error) {
-        console.error('Error fetching latest ratings:', error)
+        if (axios.isAxiosError(error) && error.response) {
+          const errorMessage = typeof error.response.data.message === 'string'
+            ? error.response.data.message
+            : Object.values(error.response.data.message).join(', ')
+          toast.error(errorMessage)
+        } else {
+          toast.error('Ooops, something went wrong. Please try again later.')
+        }
       } finally {
         setLoading(false)
       }
@@ -64,13 +73,20 @@ export default function Home() {
   useEffect(() => {
     const fetchPopularBooks = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/getPopularBooks`)
+        const response = await axios.get(`http://localhost:8000/get-popular-books`)
         
         if (response?.data) {
           setPopularBooks(response.data)
         }
       } catch (error) {
-        console.error('Error fetching latest ratings:', error)
+        if (axios.isAxiosError(error) && error.response) {
+          const errorMessage = typeof error.response.data.message === 'string'
+            ? error.response.data.message
+            : Object.values(error.response.data.message).join(', ')
+          toast.error(errorMessage)
+        } else {
+          toast.error('Ooops, something went wrong. Please try again later.')
+        }
       } finally {
         setLoading(false)
       }
@@ -78,8 +94,6 @@ export default function Home() {
 
     fetchPopularBooks()
   }, [])
-
-
 
   return (
     <>
@@ -134,18 +148,28 @@ export default function Home() {
                 </span>
               </PopularBooksTitle>
               <PopularBooksCardsContent>
-                {(popularBooks && popularBooks.length > 0) &&
-                  popularBooks.map((book) => (
-                    <PopularBookCard
-                      key={book.id}
-                      book={book}
-                      averageRating={book?.average_rating}
-                      onClick={() => {
-                        setSelectedBook(book)
-                        setOpenLateralMenu(true)
-                      }}
-                    />
-                  ))}
+                {loading ? (
+                    Array.from({ length: 6 }, (_, index) => (
+                      <SkeletonPopularBook key={index} />
+                    ))
+                  ) : (
+                    (!popularBooks || popularBooks.length === 0) ? (
+                      Array.from({ length: 6 }, (_, index) => (
+                        <SkeletonPopularBook key={index} />
+                      ))
+                    ) : (
+                      popularBooks.map((book) => (
+                        <PopularBookCard
+                          key={book.id}
+                          book={book}
+                          onClick={() => {
+                            setSelectedBook(book)
+                            setOpenLateralMenu(true)
+                          }}
+                        />
+                      ))
+                    )
+                  )}
               </PopularBooksCardsContent>
             </PopularBooksCardsContainer>
           </HomeContent>

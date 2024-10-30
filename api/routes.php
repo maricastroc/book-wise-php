@@ -8,11 +8,12 @@ $path = parse_url($_SERVER['REQUEST_URI'])['path'];
 $controller = trim($path, '/') ?: 'index';
 
 $routes = [
-    'getBooks' => 'controllers/getBooks.php',
-    'signIn' => 'controllers/signIn.php',
-    'getLatestRatings' => 'controllers/getLatestRatings.php',
-    'authenticateUser' => 'controllers/authenticateUser.php',
-    'getPopularBooks' => 'controllers/getPopularBooks.php',
+    'get-books' => 'controllers/get-books.php',
+    'sign-in' => 'controllers/sign-in.php',
+    'get-latest-ratings' => 'controllers/get-latest-ratings.php',
+    'sign-up' => 'controllers/sign-up.php',
+    'get-popular-books' => 'controllers/get-popular-books.php',
+    'get-categories' => 'controllers/get-categories.php',
 ];
 
 if (array_key_exists($controller, $routes)) {
