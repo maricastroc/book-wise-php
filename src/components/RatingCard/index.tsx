@@ -30,7 +30,7 @@ export function RatingCard({ book, user, rating, ...rest }: RatingCardProps) {
     getDateFormattedAndRelative(rating.created_at)
 
   const router = useRouter()
-
+console.log(user)
   return (
     <Container>
       <Header>

@@ -27,7 +27,7 @@ export function LateralMenu({ book, onClose }: LateralMenuProps) {
   const [openRatingForm, setOpenRatingForm] = useState(false)
 
   const { user } = useAuth()
-  console.log(user)
+
   return (
     book && (
       <Container>

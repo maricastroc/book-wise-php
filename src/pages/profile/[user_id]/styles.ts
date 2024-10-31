@@ -1,4 +1,4 @@
-import { styled } from '../../styles'
+import { styled } from '@/styles'
 
 export const Container = styled('div', {
   display: 'flex',
@@ -71,24 +71,6 @@ export const ProfileContainer = styled('div', {
   },
 })
 
-export const MainContent = styled('div', {
-  display: 'flex',
-  flexDirection: 'column',
-  margin: '0 auto',
-  width: '100%',
-  minHeight: '100%',
-
-  '@media (min-width: 1024px)': {
-    minWidth: '26rem',
-    maxWidth: '100%',
-    gap: 0,
-  },
-
-  '@media (min-width: 1200px)': {
-    maxWidth: '40rem',
-  },
-})
-
 export const Heading = styled('div', {
   display: 'flex',
   flexDirection: 'column',
@@ -116,6 +98,24 @@ export const HeadingTitle = styled('div', {
   },
 })
 
+export const UserRatingsContainer = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  margin: '0 auto',
+  width: '100%',
+  minHeight: '100%',
+
+  '@media (min-width: 1024px)': {
+    minWidth: '26rem',
+    maxWidth: '100%',
+    gap: 0,
+  },
+
+  '@media (min-width: 1200px)': {
+    maxWidth: '40rem',
+  },
+})
+
 export const Divider = styled('span', {
   display: 'block',
   backgroundColor: '$gray600',
@@ -126,64 +126,6 @@ export const Divider = styled('span', {
 
   '@media (min-width: 1024px)': {
     display: 'none',
-  },
-})
-
-export const Input = styled('input', {
-  backgroundColor: 'transparent',
-  border: 'solid 1px $gray500',
-  color: '$gray100',
-  padding: '0.6rem',
-  fontSize: '0.95rem',
-  borderRadius: 10,
-})
-
-export const TextArea = styled('textarea', {
-  width: '100%',
-  backgroundColor: '$gray800',
-  padding: '0.875rem 0.875rem 1.25rem',
-  border: 'solid 1px $gray500',
-  borderRadius: 8,
-  height: 164,
-  minHeight: 80,
-  resize: 'none',
-  color: '$gray200',
-  lineHeight: '1.3rem',
-})
-
-export const ImageInput = styled('div', {
-  backgroundColor: 'transparent',
-  border: 'solid 1px $gray500',
-  color: '$gray100',
-  padding: '0.4rem 0.6rem',
-  fontSize: '0.95rem',
-  borderRadius: 10,
-
-  input: {
-    display: 'none',
-  },
-
-  button: {
-    backgroundColor: '$gray600',
-    color: '$gray100',
-    padding: '0.2rem 0.7rem',
-    cursor: 'pointer',
-    borderRadius: 8,
-    fontSize: '0.8rem',
-    border: 'none',
-
-    '&:hover': {
-      transition: '200ms',
-      backgroundColor: '$gray500',
-
-      svg: {
-        backgroundColor: '$gray500',
-      },
-    },
-  },
-
-  span: {
-    marginLeft: '0.7rem',
   },
 })
 
@@ -223,6 +165,7 @@ export const SearchBar = styled('div', {
     backgroundColor: 'transparent',
     border: 'none',
     color: '$white',
+    width: '100%',
 
     '&:focus': {
       boxShadow: 'none',
@@ -255,7 +198,7 @@ export const SearchBar = styled('div', {
   },
 })
 
-export const BooksContainer = styled('div', {
+export const UserRatings = styled('div', {
   marginTop: '2rem',
   display: 'flex',
   alignItems: 'flex-start',

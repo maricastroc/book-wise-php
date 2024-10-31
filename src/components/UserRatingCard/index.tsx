@@ -15,12 +15,13 @@ import { StarsRating } from '../StarsRating'
 import { BookProps } from '@/@types/book'
 import { RatingProps } from '@/@types/rating'
 
-interface ProfileCardProps {
+interface UserRatingProps {
   book: BookProps
   rating: RatingProps
 }
 
-export function ProfileCard({ book, rating }: ProfileCardProps) {
+export function UserRatingCard({ book, rating }: UserRatingProps) {
+  console.log(book)
   return (
     <Wrapper>
       <Heading></Heading>
@@ -28,10 +29,10 @@ export function ProfileCard({ book, rating }: ProfileCardProps) {
         <BookContainer>
           <BookDetails>
             <BookData>
-              <BookCover src={book.cover_url} alt="" />
+              <BookCover src={`../${book.cover_url}`} alt="" />
               <BookInfo>
                 <BookInfoText>
-                  <h2>{book.title}</h2>
+                  <h2>{`${book.title} (${book.publishing_year})`}</h2>
                   <p>{book.author}</p>
                 </BookInfoText>
                 <StarsRating rating={rating.rate} />

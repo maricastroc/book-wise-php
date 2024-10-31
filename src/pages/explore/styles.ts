@@ -1,4 +1,4 @@
-import { styled } from '../../styles'
+import { styled } from '@/styles'
 
 export const Container = styled('div', {
   position: 'relative',
@@ -121,6 +121,7 @@ export const SearchBar = styled('div', {
     backgroundColor: 'transparent',
     border: 'none',
     color: '$white',
+    width: '100%',
 
     '&:focus': {
       boxShadow: 'none',

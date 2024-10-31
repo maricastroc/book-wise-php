@@ -23,6 +23,7 @@ export function BookCard({ book }: { book: BookProps }) {
     pages_number,
     average_rating,
     total_ratings,
+    publishing_year
   } = book
 
   const categoryNames = book.categories?.map((category) => category?.name)
@@ -33,7 +34,7 @@ export function BookCard({ book }: { book: BookProps }) {
         <BookCover alt="" src={cover_url} />
         <BookInfo>
           <BookData>
-            <h2>{title}</h2>
+            <h2>{`${title} (${publishing_year})`}</h2>
             <p>{author}</p>
           </BookData>
           <RatingContainer>

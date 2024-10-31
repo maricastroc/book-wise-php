@@ -1,4 +1,4 @@
-import { styled } from '../../../../styles'
+import { styled } from '@/styles'
 
 export const BookContainer = styled('div', {
   display: 'flex',
@@ -68,6 +68,7 @@ export const BookData = styled('div', {
   },
 
   p: {
+    marginTop: '0.2rem',
     color: '$gray300',
     fontSize: '0.9rem',
   },
@@ -77,7 +78,7 @@ export const BookData = styled('div', {
     textAlign: 'left',
 
     h2: {
-      fontSize: '1.25rem',
+      fontSize: '1.1rem',
     },
 
     p: {

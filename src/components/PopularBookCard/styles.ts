@@ -1,4 +1,4 @@
-import { styled } from '../../styles'
+import { styled } from '@/styles'
 
 export const Container = styled('div', {
   cursor: 'pointer',
@@ -36,7 +36,7 @@ export const BookData = styled('div', {
   gap: '0.2rem',
 
   h2: {
-    fontSize: '1rem',
+    fontSize: '0.9rem',
     maxHeight: '3.5rem',
     whiteSpace: 'break-spaces',
     overflow: 'scroll',

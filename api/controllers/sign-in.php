@@ -49,12 +49,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'token' => $token,
             'user_id' => $user->id,
             'name' => $user->name,
+            'email' => $user->email,
             'avatar_url' => $user->avatar_url
         ]);
         
         exit();
     } else {
-        http_response_code(401); // Retorna código 401 para usuário não encontrado
+        http_response_code(401);
         echo json_encode([
             'status' => 'error',
             'message' => 'Incorrect e-mail or password!'

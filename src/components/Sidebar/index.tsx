@@ -25,6 +25,10 @@ export function Sidebar() {
 
   const { user, signOut } = useAuth()
 
+  const avatarUrl = router.pathname.includes('profile')
+  ? `../${user?.avatar_url ?? ''}`
+  : user?.avatar_url ?? '';
+
   const handleSignOut = async () => {
     try {
       signOut()
@@ -81,7 +85,7 @@ export function Sidebar() {
                   <PageBtn
                     active={router.pathname.includes('profile')}
                     onClick={() => {
-                      router.push(`/profile`)
+                      router.push(`profile/${user.id}`)
                     }}
                   >
                     <User />
@@ -94,7 +98,7 @@ export function Sidebar() {
           {user ? (
             <ProfileContainer>
               <AvatarContainer>
-                <AvatarDefault src={user?.avatar_url ?? ''} />
+                <AvatarDefault src={avatarUrl} />
               </AvatarContainer>
               <SignOutContainer>
                 <p>{user?.name ?? ''}</p>

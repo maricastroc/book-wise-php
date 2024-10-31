@@ -59,12 +59,7 @@ export default function Login() {
       toast.success('Welcome to the Book Wise!')
       router.push('/home')
     } catch (error) {
-      if (error) {
-        toast.error(error as string)
-        return
-      }
-
-      toast.error('An unexpected error occurred.')
+      toast.error(error ? (error as string) : 'An unexpected error occurred.');
     }
   }
 

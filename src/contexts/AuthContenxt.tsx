@@ -6,16 +6,11 @@ import {
   useState,
 } from 'react'
 import axios from 'axios'
-import { toast } from 'react-toastify'
-
-interface User {
-  id: number
-  name: string
-  avatar_url: string
-}
+import { handleAxiosError } from '@/utils/handleAxiosError'
+import { UserProps } from '@/@types/user'
 
 interface AuthContextData {
-  user: User | null
+  user: UserProps | null
   token: string | null
   signIn: (data: { email: string; password: string }) => Promise<void>
   signOut: () => void
@@ -24,7 +19,7 @@ interface AuthContextData {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<UserProps | null>(null)
   const [token, setToken] = useState<string | null>(null)
 
   useEffect(() => {
@@ -42,9 +37,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const response = await axios.post('http://localhost:8000/sign-in', data)
 
       if (response.data.status === 'success') {
-        const { token, user_id, name, avatar_url } = response.data
+        const { token, user_id, name, email, avatar_url } = response.data
 
-        const userData: User = { id: user_id, name, avatar_url }
+        const userData: UserProps = { id: user_id, name, avatar_url, email }
         setUser(userData)
         setToken(token)
 
@@ -54,15 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error(response.data.message || 'Login failed')
       }
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        const errorMessage =
-          typeof error.response.data.message === 'string'
-            ? error.response.data.message
-            : Object.values(error.response.data.message).join(', ')
-        toast.error(errorMessage)
-      } else {
-        toast.error('Ooops, something went wrong. Please try again later.')
-      }
+      handleAxiosError(error)
     }
   }
 

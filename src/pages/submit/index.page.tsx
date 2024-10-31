@@ -30,6 +30,7 @@ import { useAuth } from '@/contexts/AuthContenxt'
 import { MobileHeader } from '@/components/MobileHeader'
 import { Sidebar } from '@/components/Sidebar'
 import { UserDetails } from '@/components/UserDetails'
+import { handleAxiosError } from '@/utils/handleAxiosError'
 
 const submitBookFormSchema = z.object({
   user_id: z.number(),
@@ -55,7 +56,7 @@ export default function Submit() {
   const [isMobile, setIsMobile] = useState(false)
 
   const { user } = useAuth()
-  console.log(user)
+
   const inputFileRef = useRef<HTMLInputElement>(null)
 
   const {
@@ -110,15 +111,7 @@ export default function Submit() {
 
       reset()
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        const errorMessage =
-          typeof error.response.data.message === 'string'
-            ? error.response.data.message
-            : Object.values(error.response.data.message).join(', ')
-        toast.error(errorMessage)
-      } else {
-        toast.error('Ooops, something went wrong. Please try again later.')
-      }
+      handleAxiosError(error)
     }
   }
 
@@ -238,7 +231,9 @@ export default function Submit() {
             </MainContent>
           </SubmitContainer>
           <Divider />
-          <UserDetailsContainer>{user && <UserDetails />}</UserDetailsContainer>
+          <UserDetailsContainer>
+            {user && <UserDetails userId={user.id} />}
+          </UserDetailsContainer>
         </SubmitWrapper>
       </Container>
     </>

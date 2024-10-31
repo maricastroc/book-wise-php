@@ -14,7 +14,6 @@ interface ExploreCardProps {
 }
 
 export function ExploreCard({ book, ...rest }: ExploreCardProps) {
-  console.log(book)
   return (
     <Container {...rest}>
       <BookCover alt="" src={book.cover_url} />

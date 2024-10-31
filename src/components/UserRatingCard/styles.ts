@@ -1,4 +1,4 @@
-import { styled } from '../../styles'
+import { styled } from '@/styles'
 import Link from 'next/link'
 
 export const Wrapper = styled('div', {

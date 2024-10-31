@@ -10,52 +10,47 @@ import {
   UserInfoItem,
 } from './styles'
 import { BookOpen, BookmarkSimple, Books, UserList } from 'phosphor-react'
-import { useAuth } from '@/contexts/AuthContenxt'
+import { useRouter } from 'next/router'
 import axios from 'axios'
-import { toast } from 'react-toastify'
+import { handleAxiosError } from '@/utils/handleAxiosError'
 
-export function UserDetails() {
-  const { user } = useAuth()
+interface UserDetailsProps {
+  userId: number
+}
 
-  const [isLoading, setIsLoading] = useState(false)
-
-  const [mostReadCategory, setMostReadCategory] = useState('')
-
-  const [totalRatingsQuantity, setTotalRatingsQuantity] = useState(null)
-
-  const [totalAuthorsQuantity, setTotalAuthorsQuantity] = useState(null)
-
-  const [totalPagesRead, setTotalPagesRead] = useState(null)
+export function UserDetails({ userId }: UserDetailsProps) {
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(true)
+  const [mostReadCategory, setMostReadCategory] = useState<string | null>(null)
+  const [totalRatingsQuantity, setTotalRatingsQuantity] = useState<number | null>(null)
+  const [totalAuthorsQuantity, setTotalAuthorsQuantity] = useState<number | null>(null)
+  const [userAvatarUrl, setUserAvatarUrl] = useState<string | null>(null)
+  const [userName, setUserName] = useState<string | null>(null)
+  const [totalPagesRead, setTotalPagesRead] = useState<number | null>(null)
 
   useEffect(() => {
-    if (user) {
+    if (userId) {
       const fetchUserRatings = async () => {
+        setIsLoading(true)
         try {
-          const response = await axios.get(
-            'http://localhost:8000/get-user-reading-info',
-            {
-              params: {
-                user_id: user.id,
-              },
-            },
-          )
+          const response = await axios.get('http://localhost:8000/get-user-reading-info', {
+            params: { user_id: userId },
+          })
 
           if (response?.data) {
             setTotalPagesRead(response.data.total_pages_read)
             setMostReadCategory(response.data.most_read_category)
             setTotalAuthorsQuantity(response.data.unique_authors_count)
             setTotalRatingsQuantity(response.data.ratings_count)
+            setUserAvatarUrl(
+              router.pathname.includes('profile')
+                ? `../${response.data.user_avatar_url}`
+                : response.data.user_avatar_url
+            )
+            setUserName(response.data.user_name)
           }
         } catch (error) {
-          if (axios.isAxiosError(error) && error.response) {
-            const errorMessage =
-              typeof error.response.data.message === 'string'
-                ? error.response.data.message
-                : Object.values(error.response.data.message).join(', ')
-            toast.error(errorMessage)
-          } else {
-            toast.error('Ooops, something went wrong. Please try again later.')
-          }
+          handleAxiosError(error)
         } finally {
           setIsLoading(false)
         }
@@ -63,43 +58,43 @@ export function UserDetails() {
 
       fetchUserRatings()
     }
-  }, [user])
+  }, [userId, router.pathname])
 
   return (
     <Container>
       <UserInfo>
         <AvatarContainer>
-          <AvatarDefault alt="" src={user?.avatar_url} />
+          <AvatarDefault alt="User avatar" src={userAvatarUrl || ''} />
         </AvatarContainer>
-        <h2>{user?.name}</h2>
+        <h2>{userName}</h2>
       </UserInfo>
       <Separator />
       <UserInfoContainer>
         <UserInfoItem>
           <BookOpen />
           <ItemText>
-            <h2>{totalPagesRead}</h2>
+            <h2>{totalPagesRead ?? '-'}</h2>
             <p>Pages read</p>
           </ItemText>
         </UserInfoItem>
         <UserInfoItem>
           <Books />
           <ItemText>
-            <h2>{totalRatingsQuantity}</h2>
+            <h2>{totalRatingsQuantity ?? '-'}</h2>
             <p>Rated books</p>
           </ItemText>
         </UserInfoItem>
         <UserInfoItem>
           <UserList />
           <ItemText>
-            <h2>{totalAuthorsQuantity}</h2>
+            <h2>{totalAuthorsQuantity ?? '-'}</h2>
             <p>Authors read</p>
           </ItemText>
         </UserInfoItem>
         <UserInfoItem>
           <BookmarkSimple />
           <ItemText>
-            <h2>{mostReadCategory}</h2>
+            <h2>{mostReadCategory ?? '-'}</h2>
             <p>Most read category</p>
           </ItemText>
         </UserInfoItem>

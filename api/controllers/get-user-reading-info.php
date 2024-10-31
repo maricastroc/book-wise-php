@@ -21,7 +21,9 @@ $query = "
          WHERE ratings.user_id = :user_id) AS unique_authors_count,
         (SELECT COUNT(*)
          FROM ratings
-         WHERE ratings.user_id = :user_id) AS ratings_count
+         WHERE ratings.user_id = :user_id) AS ratings_count,
+        (SELECT name FROM users WHERE users.id = :user_id) AS user_name,
+        (SELECT avatar_url FROM users WHERE users.id = :user_id) AS user_avatar_url
     FROM ratings
     JOIN books ON ratings.book_id = books.id
     JOIN book_categories ON books.id = book_categories.book_id
@@ -41,7 +43,9 @@ if ($result) {
         'most_read_category' => $result['category_name'],
         'category_read_count' => $result['category_count'],
         'unique_authors_count' => $result['unique_authors_count'],
-        'ratings_count' => $result['ratings_count']
+        'ratings_count' => $result['ratings_count'],
+        'user_name' => $result['user_name'],
+        'user_avatar_url' => $result['user_avatar_url']
     ];
     echo json_encode($response);
 } else {

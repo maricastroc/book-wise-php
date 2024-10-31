@@ -17,7 +17,8 @@ $query = "
         books.id AS book_id,
         books.cover_url AS book_cover_url, 
         books.author AS book_author, 
-        books.title AS book_title, 
+        books.title AS book_title,
+        books.publishing_year AS book_publishing_year, 
         users.name AS user_name, 
         users.avatar_url AS user_avatar_url
     FROM ratings
@@ -54,7 +55,8 @@ foreach ($reviews as $review) {
         'id' => $review['book_id'],
         'title' => $review['book_title'],
         'author' => $review['book_author'],
-        'cover_url' => $review['book_cover_url']
+        'cover_url' => $review['book_cover_url'],
+        'publishing_year' => $review['book_publishing_year']
     ];
 
     $formattedRatings[] = $rating;
