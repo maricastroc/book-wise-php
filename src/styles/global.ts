@@ -10,7 +10,6 @@ export const globalStyles = globalCss({
       boxShadow: '0 0 0 2px rgba(37, 45, 74, 1)',
       borderRadius: 8,
       border: 'solid 1px transparent',
-      padding: '0 0.5rem',
     },
   },
 

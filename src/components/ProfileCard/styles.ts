@@ -4,8 +4,8 @@ import Link from 'next/link'
 export const Wrapper = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'flex-start',
-  justifyContent: 'flex-start',
+  alignItems: 'center',
+  justifyContent: 'center',
   width: '100%',
   gap: '0.8rem',
 })
@@ -67,17 +67,18 @@ export const BookContainer = styled('div', {
 })
 
 export const BookCover = styled('img', {
-  width: '6.75rem',
   height: 'auto',
   borderRadius: 8,
+  width: '7.5rem',
 })
 
 export const BookDetails = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'flex-start',
+  alignItems: 'center',
   justifyContent: 'center',
   gap: '1rem',
+  width: '100%',
 })
 
 export const BookData = styled('div', {

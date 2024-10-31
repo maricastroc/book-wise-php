@@ -238,18 +238,7 @@ export default function Submit() {
             </MainContent>
           </SubmitContainer>
           <Divider />
-          <UserDetailsContainer>
-            {user && (
-              <UserDetails
-                avatar_url={user.avatar_url}
-                name={user?.name}
-                total_pages={7890}
-                books_rated={5}
-                authors_read={34}
-                most_read_category={'Fiction'}
-              />
-            )}
-          </UserDetailsContainer>
+          <UserDetailsContainer>{user && <UserDetails />}</UserDetailsContainer>
         </SubmitWrapper>
       </Container>
     </>

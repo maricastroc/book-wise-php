@@ -10,6 +10,8 @@ $routes = [
     'get-popular-books' => 'controllers/get-popular-books.php',
     'get-categories' => 'controllers/get-categories.php',
     'register-book' => 'controllers/register-book.php',
+    'get-user-ratings' => 'controllers/get-user-ratings.php',
+    'get-user-reading-info' => 'controllers/get-user-reading-info.php',
 ];
 
 if (array_key_exists($controller, $routes)) {

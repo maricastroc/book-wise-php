@@ -31,7 +31,7 @@ export function ProfileCard({ book, rating }: ProfileCardProps) {
               <BookCover src={book.cover_url} alt="" />
               <BookInfo>
                 <BookInfoText>
-                  <h2>{book.name}</h2>
+                  <h2>{book.title}</h2>
                   <p>{book.author}</p>
                 </BookInfoText>
                 <StarsRating rating={rating.rate} />
@@ -39,7 +39,7 @@ export function ProfileCard({ book, rating }: ProfileCardProps) {
             </BookData>
             <Separator />
             <BookDescription>
-              <p>{rating.description}</p>
+              <p>{rating.review}</p>
             </BookDescription>
           </BookDetails>
         </BookContainer>

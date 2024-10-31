@@ -15,7 +15,7 @@ import {
 import Image from 'next/image'
 import SidebarBackground from '../../../public/assets/sidebar.svg'
 import Logo from '../../../public/assets/logo.svg'
-import { Binoculars, Book, ChartLineUp, SignOut } from 'phosphor-react'
+import { Binoculars, Book, ChartLineUp, SignOut, User } from 'phosphor-react'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/contexts/AuthContenxt'
 import { toast } from 'react-toastify'
@@ -76,6 +76,19 @@ export function Sidebar() {
                   <p>Submit</p>
                 </PageBtn>
               </Item>
+              {user && (
+                <Item>
+                  <PageBtn
+                    active={router.pathname.includes('profile')}
+                    onClick={() => {
+                      router.push(`/profile`)
+                    }}
+                  >
+                    <User />
+                    <p>Profile</p>
+                  </PageBtn>
+                </Item>
+              )}
             </ItemsContainer>
           </SidebarMain>
           {user ? (
