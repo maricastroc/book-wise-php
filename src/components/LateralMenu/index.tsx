@@ -55,12 +55,9 @@ export function LateralMenu({ book, onClose }: LateralMenuProps) {
             </RatingsContentTitle>
             {user && openRatingForm && book?.id && (
               <RatingCardForm
-                avatar_url={user?.avatar_url ?? ''}
-                name={user.name}
                 onClose={() => setOpenRatingForm(false)}
                 onCloseLateralMenu={() => onClose()}
                 bookId={book?.id}
-                userId={user.id}
               />
             )}
             <RatingsContent>

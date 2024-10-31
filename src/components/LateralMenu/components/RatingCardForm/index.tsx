@@ -6,7 +6,6 @@ import {
   ButtonsContainer,
   CharacterCounter,
   Container,
-  FormErrors,
   ReviewForm,
   ReviewFormContainer,
   ReviewFormHeader,
@@ -20,70 +19,107 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import 'react-toastify/dist/ReactToastify.css'
 import { useState } from 'react'
+import { FormErrors } from '@/components/shared/FormErrors'
+import { useAuth } from '@/contexts/AuthContenxt'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import { handleAxiosError } from '@/utils/handleAxiosError'
+import { useFetchBooks } from '@/utils/useFetchBooks'
 
 interface RatingCardFormProps {
-  avatar_url: string
-  name: string
   bookId: number
-  userId: number
   onClose: () => void
   onCloseLateralMenu: () => void
 }
 
 const ratingCardFormSchema = z.object({
-  description: z
+  review: z
     .string()
-    .min(3, { message: 'Please, write your review before submit.' }),
-  rating: z
-    .number()
-    .positive({ message: 'Please choose a rating from 1 to 5.' })
-    .max(5),
+    .min(20, { message: 'Review must have at least 20 characters.' }),
+  rate: z
+  .number()
+  .positive({ message: 'Please choose a rating from 1 to 5.' })
+  .max(5),
 })
 
 type RatingCardFormData = z.infer<typeof ratingCardFormSchema>
 
 export function RatingCardForm({
-  avatar_url,
-  name,
+  bookId,
   onClose,
+  onCloseLateralMenu,
 }: RatingCardFormProps) {
-  const [rating, setRating] = useState(0)
+  const { user } = useAuth();
+
+  const [rate, setRate] = useState(0)
 
   const {
     register,
     watch,
     setValue,
+    handleSubmit,
+    setError,
     formState: { isSubmitting, errors },
   } = useForm<RatingCardFormData>({
     resolver: zodResolver(ratingCardFormSchema),
     defaultValues: {
-      rating,
+      rate,
+      review: '',
     },
   })
 
-  const handleRating = (rate: number) => {
-    setRating(rate)
-    setValue('rating', rate)
+  const handleRate = (rate: number) => {
+    setValue('rate', rate)
+    setRate(rate)
   }
 
-  const characterCount = watch('description')?.split('').length || 0
+  const handleSubmitRating = async (data: RatingCardFormData) => {
+    if (user) {
+      if (rate === 0) {
+        setError('rate', { message: 'Please choose a rate from 1 to 5.' });
+      }
+  
+      const formData = new FormData()
+  
+      formData.append('rate', data.rate.toString())
+      formData.append('review', data.review)
+      formData.append('book_id', bookId.toString())
+      formData.append('user_id', user.id.toString())
+      formData.append('created_at', new Date().toISOString())
+  
+      try {
+        await axios.post('http://localhost:8000/post-book-rating', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        })
+  
+        toast.success('Review successfully registered!')
+        onCloseLateralMenu()
+        onClose()
+      } catch (error) {
+        handleAxiosError(error)
+      }
+    }
+  }
+
+  const characterCount = watch('review')?.split('').length || 0
 
   return (
-    <Container onSubmit={() => console.log('hey')}>
+    user && (
+      <Container onSubmit={handleSubmit(handleSubmitRating)}>
       <ReviewFormHeader>
         <UserData>
           <AvatarContainer>
-            <AvatarDefault src={avatar_url} />
+            <AvatarDefault src={user.avatar_url} />
           </AvatarContainer>
-          <p>{name}</p>
+          <p>{user.name}</p>
         </UserData>
         <Rating
-          onClick={handleRating}
+          onClick={handleRate}
           emptyIcon={<Star size={20} />}
           fillIcon={<Star weight="fill" size={20} />}
           emptyColor="#8381D9"
           fillColor="#8381D9"
-          {...register('rating')}
+          {...register('rate')}
         />
       </ReviewFormHeader>
       <ReviewFormContainer>
@@ -91,18 +127,18 @@ export function RatingCardForm({
           placeholder="Write your review here"
           maxLength={450}
           spellCheck={false}
-          {...register('description')}
+          {...register('review')}
         />
         <CharacterCounter>
           <span>{characterCount}</span>/450
         </CharacterCounter>
       </ReviewFormContainer>
-      {(errors.rating || errors.description) && (
-        <FormErrors>
-          <span>{errors.rating && errors.rating.message}</span>
-          <span>{errors.description && errors.description.message}</span>
-        </FormErrors>
-      )}
+      {errors.rate && 
+        <FormErrors error={'Please choose a rate from 1 to 5.'} />
+      }
+      {errors.review && 
+        <FormErrors error={errors.review.message} />
+      }
       <ButtonsContainer>
         <ActionButton
           type="button"
@@ -116,5 +152,6 @@ export function RatingCardForm({
         </ActionButton>
       </ButtonsContainer>
     </Container>
+    )
   )
 }

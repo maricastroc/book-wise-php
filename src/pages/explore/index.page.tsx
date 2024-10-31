@@ -35,13 +35,16 @@ export default function Explore() {
 
   const [isLateralMenuOpen, setIsLateralMenuOpen] = useState(false)
 
-  const { books, isBooksFetchLoading } = useFetchBooks(selectedCategory, search)
-  
+  const { books, isBooksFetchLoading, refetchBooks } = useFetchBooks(selectedCategory, search)
+
   const { categories } = useFetchCategories()
 
   const isMobile = useScreenSize(768)
 
-  const handleCloseLateralMenu = () => setIsLateralMenuOpen(false)
+  const handleCloseLateralMenu = () => {
+    refetchBooks()
+    setIsLateralMenuOpen(false)
+  }
 
   const renderCategories = () => (
     <Categories>

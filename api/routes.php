@@ -12,6 +12,7 @@ $routes = [
     'register-book' => 'controllers/register-book.php',
     'get-user-ratings' => 'controllers/get-user-ratings.php',
     'get-user-reading-info' => 'controllers/get-user-reading-info.php',
+    'post-book-rating' => 'controllers/post-book-rating.php',
 ];
 
 if (array_key_exists($controller, $routes)) {
