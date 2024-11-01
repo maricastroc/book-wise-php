@@ -8,6 +8,38 @@ import {
   Close as RadixClose,
 } from '@radix-ui/react-dialog'
 
+import {
+  Root as RadixRoot,
+  Indicator as RadixIndicator,
+} from '@radix-ui/react-checkbox'
+
+export const StyledCheckbox = styled(RadixRoot, {
+  all: 'unset',
+  backgroundColor: 'transparent',
+  width: 18,
+  height: 18,
+  borderRadius: 4,
+  border: '2px solid $gray500',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  cursor: 'pointer',
+  transition: 'background-color 0.2s ease, border-color 0.2s ease',
+
+  '&[data-state="checked"]': {
+    backgroundColor: 'transparent',
+    border: '2px solid $gray500',
+  },
+
+  '&:focus': {
+    outline: 'none',
+  },
+});
+
+export const StyledIndicator = styled(RadixIndicator, {
+  color: 'white',
+});
+
 export const Overlay = styled(RadixOverlay, {
   position: 'fixed',
   width: '100%',

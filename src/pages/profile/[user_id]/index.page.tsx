@@ -27,7 +27,7 @@ import { useRouter } from 'next/router'
 import { SkeletonPopularBook } from '@/components/SkeletonPopularBook'
 import { SkeletonUserDetails } from '@/components/SkeletonUserDetails'
 
-export default function Profile(user: UserProps) {
+export default function Profile() {
   const router = useRouter()
 
   const { user_id } = router.query

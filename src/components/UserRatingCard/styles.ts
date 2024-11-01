@@ -56,7 +56,7 @@ export const BookContainer = styled('div', {
 
   '@media (min-width: 580px)': {
     alignItems: 'flex-start',
-    width: 'auto',
+    width: '100%',
     justifyContent: 'flex-start',
   },
 
@@ -79,6 +79,10 @@ export const BookDetails = styled('div', {
   justifyContent: 'center',
   gap: '1rem',
   width: '100%',
+
+  '@media (min-width: 580px)': {
+    alignItems: 'flex-start',
+  },
 })
 
 export const BookData = styled('div', {
@@ -147,6 +151,7 @@ export const BookDescription = styled('div', {
     fontSize: '$sm',
     wordBreak: 'break-word',
     paddingRight: '0.3rem',
+    textAlign: 'left',
   },
 })
 

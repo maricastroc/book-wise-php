@@ -32,6 +32,41 @@ export const UserInfo = styled('div', {
   },
 })
 
+export const EditUserBtn = styled('button', {
+  backgroundColor: 'transparent',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '0.7rem',
+  cursor: 'pointer',
+  color: '$green100',
+  padding: '0.3rem',
+  fontSize: '0.85rem',
+  borderRadius: 10,
+  border: 'solid 1px $green100',
+  width: '7rem',
+  marginTop: '1rem',
+
+  svg: {
+    color: '$green100',
+  },
+
+  '&:hover': {
+    backgroundColor: '$green200',
+    color: '#FFFFFF',
+    transition: '200ms',
+    border: 'solid 1px $green200',
+
+    svg: {
+      color: '#FFFFFF',
+    },
+  },
+
+  '&:focus': {
+    outline: '1px solid $green200',
+  },
+})
+
 export const Separator = styled('span', {
   width: 30,
   background: '$gradient-horizontal',

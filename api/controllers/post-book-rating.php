@@ -42,8 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     http_response_code(201);
     echo json_encode([
-      'status' => 'success',
-      'message' => 'Rating successfully registered!'
+        'status' => 'success',
+        'message' => 'Rating successfully registered!'
     ]);
     
     exit();    

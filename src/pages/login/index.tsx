@@ -54,13 +54,7 @@ export default function Login() {
   })
 
   const handleSignIn = async (data: LoginFormData) => {
-    try {
-      await signIn(data)
-      toast.success('Welcome to the Book Wise!')
-      router.push('/home')
-    } catch (error) {
-      toast.error(error ? (error as string) : 'An unexpected error occurred.');
-    }
+    await signIn(data)
   }
 
   return (

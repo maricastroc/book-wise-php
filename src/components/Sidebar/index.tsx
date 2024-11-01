@@ -98,7 +98,7 @@ export function Sidebar() {
           {user ? (
             <ProfileContainer>
               <AvatarContainer>
-                <AvatarDefault src={avatarUrl} />
+                <AvatarDefault src={avatarUrl ?? ''} />
               </AvatarContainer>
               <SignOutContainer>
                 <p>{user?.name ?? ''}</p>
